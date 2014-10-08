@@ -448,6 +448,11 @@ public class Shell {
     }
     
     private static void shellExit(final String[] args) throws Exception {
+        if (args.length != 1)
+        {
+            shellWrongQuantity("exit");
+        }
+        
         System.exit(SUCCESS);
     }
     
