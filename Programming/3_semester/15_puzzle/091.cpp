@@ -12,8 +12,8 @@ class matrix
 {
 private:
 
-	int ST;
-	int link;
+	short ST;
+	short link;
 	short matr[19];
 
 public:
@@ -127,17 +127,17 @@ public:
 		return matr[16];
 	}
 
-	int steps() const
+	short steps() const
 	{
 		return ST;
 	}
 
-	int getLink() const
+	short getLink() const
 	{
 	    return link;
 	}
 
-	void setLink(const int l)
+	void setLink(const short l)
 	{
 	    link = l;
 	}
@@ -165,8 +165,8 @@ private:
 
 	matrix start;
 	matrix finish;
-	std::multimap < int, matrix > table; // h(x) + steps; matrix
-	std::vector < std::pair < int, char > > vertex;
+	std::multimap < short, matrix > table; // h(x) + steps; matrix
+	std::vector < std::pair < short, char > > vertex;
 	std::stack < char > path;
 
 public:
@@ -214,16 +214,16 @@ private:
 		if (temp != M->getParent())
 		{
             temp.setLink(vertex.size());
-//			if (vertex.capacity() == vertex.size())
-//            {
-//                vertex.reserve(vertex.capacity() * 2);
-//            }
+			if (vertex.capacity() == vertex.size())
+            {
+                vertex.reserve(vertex.capacity() * 2);
+            }
             switch (n)
             {
-            case 0: vertex.push_back(std::make_pair(M->getLink(), 'r')); break;
-            case 1: vertex.push_back(std::make_pair(M->getLink(), 'd')); break;
-            case 2: vertex.push_back(std::make_pair(M->getLink(), 'l')); break;
-            case 3: vertex.push_back(std::make_pair(M->getLink(), 'u')); break;
+                case 0: vertex.push_back(std::make_pair(M->getLink(), 'r')); break;
+                case 1: vertex.push_back(std::make_pair(M->getLink(), 'd')); break;
+                case 2: vertex.push_back(std::make_pair(M->getLink(), 'l')); break;
+                case 3: vertex.push_back(std::make_pair(M->getLink(), 'u')); break;
             }
 			table.insert(std::make_pair(temp.h() + temp.steps(), temp));
 		}
@@ -271,12 +271,12 @@ private:
 				}
 			}
 			//            std::cout << "-----------\n";
-			int q = table.begin()->second.h();
+			short q = table.begin()->second.h();
 			//            std::cout << table.begin()->second << table.begin()->second.h();
 
 			if (q == 0)
 			{
-				std::cout << "YES\n";
+				std::cout << "YES\nrd\n";
 				int k = table.begin()->second.getLink();
 				while (k != 0)
 				{
