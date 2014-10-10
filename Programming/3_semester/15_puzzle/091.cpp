@@ -187,6 +187,7 @@ public:
 	Vosm()
 	{
 		vertex.resize(0);
+		vertex.reserve(128);
 		std::cin >> start;
 	}
 
@@ -197,7 +198,7 @@ public:
 		short q = start.h();
 		if (q == 0)
 		{
-			std::cout << "Yes\n0\n";
+			std::cout << "YES\n";
 			return;
 		}
 		vertex.push_back(start);
@@ -225,9 +226,13 @@ private:
 		}
 		if (temp != vertex[M->getPLink()])
 		{
-			//            std::cout << temp << "H Q\n" << temp.h() << " " << temp.steps() << "\n";
+//            std::cout << temp << "H Q\n" << temp.h() << " " << temp.steps() << "\n";
 			temp.setLink(vertex.size());
 			temp.setPLink(M->getLink());
+			if (vertex.capacity() == vertex.size())
+            {
+                vertex.reserve(vertex.capacity() * 2);
+            }
 			vertex.push_back(temp);
 			table.insert(std::make_pair(temp.h() + temp.steps(), &(vertex[vertex.size() - 1])));
 		}
@@ -242,7 +247,6 @@ private:
 			table.erase(table.begin());
 
 			short Z = M->find_zero();
-			std::cout << *M;
 			if (Z % 4 < 3) //right
 			{
 				if (addV(M, Z, 0) == false)
@@ -281,7 +285,7 @@ private:
 
 			if (q == 0)
 			{
-				std::cout << "Yes\n" << M->steps() + 1 << "\n";
+				std::cout << "YES\n";
 				path.push(table.begin()->second->getDirection());
 				while (*M != start)
 				{
