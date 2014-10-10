@@ -276,7 +276,7 @@ private:
 
 			if (q == 0)
 			{
-				std::cout << "YES\nrd\n";
+				std::cout << "YES\n";
 				int k = table.begin()->second.getLink();
 				while (k != 0)
 				{
