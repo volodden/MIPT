@@ -59,7 +59,7 @@ public:
                  + abs(i % 3 - ((matr[i] + 8) % 9) % 3)
                  + abs((i + n) / 3 - ((matr[i + n] + 8) % 9) / 3)
                  + abs((i + n) % 3 - ((matr[i + n] + 8) % 9) % 3);
-        ST += 1;
+        ++ST;
     }
 
     matrix getParent()
