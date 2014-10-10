@@ -14,9 +14,7 @@ private:
 
 	int ST;
 	int link;
-	int plink;
-	short matr[17];
-	char direction;
+	short matr[19];
 
 public:
 
@@ -34,14 +32,12 @@ public:
 
 	matrix(const matrix& other)
 	{
-		for (short i = 0; i < 17; ++i)
+		for (short i = 0; i < 19; ++i)
 		{
 			matr[i] = other.matr[i];
 		}
 		ST = other.ST;
 		link = other.link;
-		plink = other.plink;
-		direction = other.direction;
 	}
 
 	~matrix()
@@ -50,56 +46,37 @@ public:
 
 	void shift(const short i, short n)
 	{
-		switch (n)
-		{
-		case 0: direction = 'r'; break;
-		case 1: direction = 'd'; break;
-		case 2: direction = 'l'; break;
-		case 3: direction = 'u'; break;
-		}
+	    matr[17] = i;
+	    matr[18] = n;
 		n %= 2;
 		n *= 3;
 		++n;
 		matr[16] -= abs(i / 4 - ((matr[i] + 15) % 16) / 4)
-			+ abs(i % 4 - ((matr[i] + 15) % 16) % 4)
-			+ abs((i + n) / 4 - ((matr[i + n] + 15) % 16) / 4)
-			+ abs((i + n) % 4 - ((matr[i + n] + 15) % 16) % 4);
+                  + abs(i % 4 - ((matr[i] + 15) % 16) % 4)
+                  + abs((i + n) / 4 - ((matr[i + n] + 15) % 16) / 4)
+                  + abs((i + n) % 4 - ((matr[i + n] + 15) % 16) % 4);
 
 		short k = matr[i];
 		matr[i] = matr[i + n];
 		matr[i + n] = k;
 
 		matr[16] += abs(i / 4 - ((matr[i] + 15) % 16) / 4)
-			+ abs(i % 4 - ((matr[i] + 15) % 16) % 4)
-			+ abs((i + n) / 4 - ((matr[i + n] + 15) % 16) / 4)
-			+ abs((i + n) % 4 - ((matr[i + n] + 15) % 16) % 4);
+                  + abs(i % 4 - ((matr[i] + 15) % 16) % 4)
+                  + abs((i + n) / 4 - ((matr[i + n] + 15) % 16) / 4)
+                  + abs((i + n) % 4 - ((matr[i + n] + 15) % 16) % 4);
 		++ST;
 	}
 
-	int getPLink() const
-	{
-		return plink;
-	}
-
-	void setPLink(const int pl)
-	{
-		plink = pl;
-	}
-
-	int getLink() const
-	{
-		return link;
-	}
-
-	void setLink(const int l)
-	{
-		link = l;
-	}
-
-	char getDirection() const
-	{
-		return direction;
-	}
+    matrix getParent() const
+    {
+        if ((this->matr[17] == -1) || (this->matr[18] == -1))
+        {
+            return *this;
+        }
+        matrix temp(*this);
+        temp.shift(this->matr[17], this->matr[18]);
+        return temp;
+    }
 
 	friend std::istream& operator >> (std::istream& in, matrix& m)
 	{
@@ -111,10 +88,10 @@ public:
 			m.matr[16] += abs(i / 4 - ((m.matr[i] + 15) % 16) / 4);
 			m.matr[16] += abs(i % 4 - ((m.matr[i] + 15) % 16) % 4);
 		}
-		m.link = 0;
-		m.plink = 0;
+		m.matr[17] = -1;
+		m.matr[18] = -1;
 		m.ST = 0;
-		m.direction = 's';
+		m.link = 0;
 		return in;
 	}
 
@@ -155,6 +132,16 @@ public:
 		return ST;
 	}
 
+	int getLink() const
+	{
+	    return link;
+	}
+
+	void setLink(const int l)
+	{
+	    link = l;
+	}
+
 	short find_zero() const
 	{
 		for (short i = 0; i < 16; ++i)
@@ -178,8 +165,8 @@ private:
 
 	matrix start;
 	matrix finish;
-	std::multimap < int, matrix* > table; // h(x) + steps; matrix
-	std::vector < matrix > vertex;
+	std::multimap < int, matrix > table; // h(x) + steps; matrix
+	std::vector < std::pair < int, char > > vertex;
 	std::stack < char > path;
 
 public:
@@ -187,7 +174,7 @@ public:
 	Vosm()
 	{
 		vertex.resize(0);
-		vertex.reserve(128);
+//		vertex.reserve(128);
 		std::cin >> start;
 	}
 
@@ -201,8 +188,8 @@ public:
 			std::cout << "YES\n";
 			return;
 		}
-		vertex.push_back(start);
-		table.insert(std::make_pair(0, &(vertex[0])));
+		vertex.push_back(std::make_pair(0, 's'));
+		table.insert(std::make_pair(0, start));
 		AStar();
 	}
 
@@ -224,17 +211,21 @@ private:
 				return false;
 			}
 		}
-		if (temp != vertex[M->getPLink()])
+		if (temp != M->getParent())
 		{
-//            std::cout << temp << "H Q\n" << temp.h() << " " << temp.steps() << "\n";
-			temp.setLink(vertex.size());
-			temp.setPLink(M->getLink());
-			if (vertex.capacity() == vertex.size())
+            temp.setLink(vertex.size());
+//			if (vertex.capacity() == vertex.size())
+//            {
+//                vertex.reserve(vertex.capacity() * 2);
+//            }
+            switch (n)
             {
-                vertex.reserve(vertex.capacity() * 2);
+            case 0: vertex.push_back(std::make_pair(M->getLink(), 'r')); break;
+            case 1: vertex.push_back(std::make_pair(M->getLink(), 'd')); break;
+            case 2: vertex.push_back(std::make_pair(M->getLink(), 'l')); break;
+            case 3: vertex.push_back(std::make_pair(M->getLink(), 'u')); break;
             }
-			vertex.push_back(temp);
-			table.insert(std::make_pair(temp.h() + temp.steps(), &(vertex[vertex.size() - 1])));
+			table.insert(std::make_pair(temp.h() + temp.steps(), temp));
 		}
 		return true;
 	}
@@ -243,13 +234,13 @@ private:
 	{
 		while (true)
 		{
-			matrix* M = table.begin()->second;
+			matrix M = table.begin()->second;
 			table.erase(table.begin());
 
-			short Z = M->find_zero();
+			short Z = M.find_zero();
 			if (Z % 4 < 3) //right
 			{
-				if (addV(M, Z, 0) == false)
+				if (addV(&M, Z, 0) == false)
 				{
 					std::cout << "No\n";
 					return;
@@ -257,7 +248,7 @@ private:
 			}
 			if (Z % 4 > 0) //left
 			{
-				if (addV(M, Z - 1, 2/*0*/) == false)
+				if (addV(&M, Z - 1, 2/*0*/) == false)
 				{
 					std::cout << "No\n";
 					return;
@@ -265,7 +256,7 @@ private:
 			}
 			if (Z / 4 < 3) //down
 			{
-				if (addV(M, Z, 1) == false)
+				if (addV(&M, Z, 1) == false)
 				{
 					std::cout << "No\n";
 					return;
@@ -273,24 +264,24 @@ private:
 			}
 			if (Z / 4 > 0) //up
 			{
-				if (addV(M, Z - 4, 3/*1*/) == false)
+				if (addV(&M, Z - 4, 3/*1*/) == false)
 				{
 					std::cout << "No\n";
 					return;
 				}
 			}
 			//            std::cout << "-----------\n";
-			int q = table.begin()->second->h();
+			int q = table.begin()->second.h();
 			//            std::cout << table.begin()->second << table.begin()->second.h();
 
 			if (q == 0)
 			{
 				std::cout << "YES\n";
-				path.push(table.begin()->second->getDirection());
-				while (*M != start)
+				int k = table.begin()->second.getLink();
+				while (k != 0)
 				{
-					path.push(M->getDirection());
-					M = &(vertex[M->getPLink()]);
+					path.push(vertex[k].second);
+					k = vertex[k].first;
 				}
 				while (path.empty() == false)
 				{
