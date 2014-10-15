@@ -20,7 +20,8 @@ public class Shell {
     static final int ERROR = 1;
     
     public static void main(final String[] args) {
-        if (args.length == 0) {     //interactive mode
+        if (args.length == 0) {
+            // Interactive mode.
             Scanner scanner = new Scanner(System.in);
             do {
                 try {
@@ -37,7 +38,7 @@ public class Shell {
                         }
                     }
                 } catch (Exception except) {
-                    System.err.println("\nSmth wrong."); //+ except.getMessage());
+                    System.err.println("\nSmth wrong.");
                     scanner.close();
                     System.exit(ERROR);
                 }
@@ -64,16 +65,16 @@ public class Shell {
                     }
                 }
             } catch (Exception except) {
-                System.err.println("\nSmth wrong."); //+ except.getMessage());
+                System.err.println("\nSmth wrong.");
                 System.exit(ERROR);
             }
         }
     }
 
     //
-    // basic functions
+    // Basic functions.
     //
-    // begin
+    // Begin.
     //
     
     private static void shellCd(final String[] args) throws Exception {
@@ -488,9 +489,9 @@ public class Shell {
     }
     
     //
-    // basic functions
+    // Basic functions.
     //
-    // end
+    // End.
     //
 
     private static void shellParser(final String[] buffer) throws Exception {
