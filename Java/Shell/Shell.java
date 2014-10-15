@@ -25,10 +25,10 @@ public class Shell {
             do {
                 try {
                     System.out.print("$ ");
-                    String[] shellIn = scanner.nextLine().split(";");
-                    for (int i = 0; i < shellIn.length; ++i) {
-                        if (shellIn[i].length() > 0) {
-                            String[] buffer = shellIn[i].trim().split("\\s+");
+                    String[] input = scanner.nextLine().split(";");
+                    for (int i = 0; i < input.length; ++i) {
+                        if (input[i].length() > 0) {
+                            String[] buffer = input[i].trim().split("\\s+");
                             try {
                                 shellParser(buffer);
                             } catch (Exception except) {
@@ -52,10 +52,10 @@ public class Shell {
                 }
                 
                 String longStr = helpArray.toString();
-                String[] shellIn = longStr.split(";");
-                for (int i = 0; i < shellIn.length; ++i) {
-                    if (shellIn[i].length() > 0) {
-                        String[] buffer = shellIn[i].trim().split("\\s+");
+                String[] input = longStr.split(";");
+                for (int i = 0; i < input.length; ++i) {
+                    if (input[i].length() > 0) {
+                        String[] buffer = input[i].trim().split("\\s+");
                         try {
                             shellParser(buffer);
                         } catch (Exception except) {
