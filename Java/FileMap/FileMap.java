@@ -3,8 +3,8 @@ package ru.fizteh.fivt.students.Volodin_Denis.FileMap;
 import java.util.Scanner;
 
 public class FileMap {
-    private final static int SUCCESS = 0;
-    private final static int ERROR = 1;
+    private static final int SUCCESS = 0;
+    private static final int ERROR = 1;
 
     private static String dbPath;
     private static DataBase database;
@@ -18,15 +18,15 @@ public class FileMap {
             }
             database = new DataBase(dbPath);
             if (args.length == 0) {
-                //interactive
+                // Interactive mode.
                 Scanner scanner = new Scanner(System.in);
                 try {
                     do {
                         System.out.print("$ ");
-                        String[] filemapIn = scanner.nextLine().split(";");
-                        for (int i = 0; i < filemapIn.length; ++i) {
-                            if (filemapIn[i].length() > 0) {
-                                String[] buffer = filemapIn[i].trim().split("\\s+");
+                        String[] input = scanner.nextLine().split(";");
+                        for (int i = 0; i < input.length; ++i) {
+                            if (input[i].length() > 0) {
+                                String[] buffer = input[i].trim().split("\\s+");
                                 try {
                                     filemapParser(buffer);
                                 } catch (Exception except) {
@@ -36,7 +36,7 @@ public class FileMap {
                         }
                     } while(true);
                 } catch (Exception except) {
-                    System.err.println("\nSmth wrong."); //+ except.getMessage());
+                    System.err.println("\nSmth wrong.");
                     scanner.close();
                     System.exit(ERROR);
                 }
@@ -48,10 +48,10 @@ public class FileMap {
                         helpArray.append(args[i]).append(' ');
                     }
                     String longStr = helpArray.toString();
-                    String[] filemapIn = longStr.split(";");
-                    for (int i = 0; i < filemapIn.length; ++i) {
-                        if (filemapIn[i].length() > 0) {
-                            String[] buffer = filemapIn[i].trim().split("\\s+");
+                    String[] input = longStr.split(";");
+                    for (int i = 0; i < input.length; ++i) {
+                        if (input[i].length() > 0) {
+                            String[] buffer = input[i].trim().split("\\s+");
                             try {
                                 filemapParser(buffer);
                             } catch (Exception except) {
@@ -60,7 +60,7 @@ public class FileMap {
                         }
                     }
                 } catch (Exception except) {
-                    System.err.println("\nSmth wrong."); //+ except.getMessage());
+                    System.err.println("\nSmth wrong.");
                     System.exit(ERROR);
                 }
             }
@@ -72,9 +72,9 @@ public class FileMap {
     }
 
     //
-    // basic commands
+    // Basic commands.
     //
-    // start
+    // Begin.
     //
 
     private static void filemapPut(final String[] args) throws Exception {
@@ -156,9 +156,9 @@ public class FileMap {
     }
 
     //
-    // basic commands
+    // Basic commands.
     //
-    // end
+    // End.
     //
 
     private static void filemapParser(final String[] args) throws Exception {
@@ -177,7 +177,7 @@ public class FileMap {
                 break;
             case "exit":
                 filemapExit(args);
-                //break;
+                break;
             default:
                 System.err.println("Command does not exist: [" + args[0] + "]");
         }
@@ -190,9 +190,4 @@ public class FileMap {
     private static void filemapWrongInput(final String commandName) throws Exception {
         throw new Exception(commandName + ": wrong input.");
     }
-/*
-    private static void filemapSmthWrong(final String commandName) throws Exception {
-        throw new Exception(commandName + "something went wrong.");
-    }
-*/
 }
