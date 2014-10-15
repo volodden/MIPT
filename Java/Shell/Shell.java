@@ -9,13 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-/**
- * @author volodden
- */
-
 public class Shell {
-    Shell() {
-    }
+
     static final int SUCCESS = 0;
     static final int ERROR = 1;
     
@@ -32,12 +27,12 @@ public class Shell {
                             String[] buffer = input[i].trim().split("\\s+");
                             try {
                                 shellParser(buffer);
-                            } catch (Exception except) {
-                                System.err.println(except.getMessage());
+                            } catch (Exception exception) {
+                                System.err.println(exception.getMessage());
                             }
                         }
                     }
-                } catch (Exception except) {
+                } catch (Exception exception) {
                     System.err.println("\nSmth wrong.");
                     scanner.close();
                     System.exit(ERROR);
@@ -59,12 +54,12 @@ public class Shell {
                         String[] buffer = input[i].trim().split("\\s+");
                         try {
                             shellParser(buffer);
-                        } catch (Exception except) {
-                            System.err.println(except.getMessage());
+                        } catch (Exception exception) {
+                            System.err.println(exception.getMessage());
                         }
                     }
                 }
-            } catch (Exception except) {
+            } catch (Exception exception) {
                 System.err.println("\nSmth wrong.");
                 System.exit(ERROR);
             }
@@ -84,12 +79,10 @@ public class Shell {
         if (args[1].isEmpty()) {
             shellNoName("cd");
         }
-        
         try {
             Path pathToFile = Paths.get(args[1]).normalize();
             if (!pathToFile.isAbsolute()) {
-                pathToFile = Paths.get(System.getProperty("user.dir"),
-                             pathToFile.toString()).normalize();
+                pathToFile = Paths.get(System.getProperty("user.dir"), pathToFile.toString()).normalize();
             }
             if (pathToFile.toFile().exists()) {
                 if (pathToFile.toFile().isDirectory()) {
@@ -100,9 +93,9 @@ public class Shell {
             } else {
                 shellNotExist("cd", args[1]);
             }
-        } catch (InvalidPathException invExcept) {
+        } catch (InvalidPathException invException) {
             shellInvalidName("cd", args[1]);
-        } catch (SecurityException secExcept) {
+        } catch (SecurityException secException) {
             shellSecurity("cd", args[1]);
         }
     }
@@ -114,14 +107,11 @@ public class Shell {
         if (args[1].isEmpty()) {
             shellNoName("mkdir");
         }
-        
         try {
             Path pathToFile = Paths.get(args[1]).normalize();
             if (!pathToFile.isAbsolute()) {
-                pathToFile = Paths.get(System.getProperty("user.dir"),
-                             pathToFile.toString()).normalize();
+                pathToFile = Paths.get(System.getProperty("user.dir"), pathToFile.toString()).normalize();
             }
-            
             if (pathToFile.toFile().exists()) {
                 shellAlreadyExist("mkdir", args[1]);
             } else {
@@ -129,9 +119,9 @@ public class Shell {
                     shellNotMkdir("mkdir", args[1]);
                 }
             }
-        } catch (InvalidPathException invExcept) {
+        } catch (InvalidPathException invException) {
             shellInvalidName("mkdir", args[1]);
-        } catch (SecurityException secExcept) {
+        } catch (SecurityException secException) {
             shellSecurity("mkdir", args[1]);
         }
     }
@@ -140,12 +130,10 @@ public class Shell {
         if (args.length != 1) {
             shellWrongQuantity("pwd");
         }
-        
         try {
-            Path pathToFile = Paths.get(
-                System.getProperty("user.dir")).normalize();
-                System.out.println(pathToFile.toString());
-        } catch (SecurityException secExcept) {
+            Path pathToFile = Paths.get(System.getProperty("user.dir")).normalize();
+            System.out.println(pathToFile.toString());
+        } catch (SecurityException secException) {
             shellSecurity("pwd", "current directory");
         }
     }
@@ -164,8 +152,7 @@ public class Shell {
             try {
                 Path pathToFile = Paths.get(args[2]).normalize();
                 if (!pathToFile.isAbsolute()) {
-                    pathToFile = Paths.get(System.getProperty("user.dir"),
-                                           args[2]).normalize();
+                    pathToFile = Paths.get(System.getProperty("user.dir"), args[2]).normalize();
                 }
                 if (!pathToFile.toFile().exists()) {
                     shellNotExist("rm", args[2]);
@@ -173,26 +160,17 @@ public class Shell {
                 if (!pathToFile.toFile().isDirectory()) {
                     shellNotDirectory("rm", args[2]);
                 }
-                
                 String[] names = pathToFile.toFile().list();
-                
                 if (names.length != 0) {
-                    for (int i = 0; i < names.length; ++i) {
-                        if (Paths.get(pathToFile.toString(),
-                              names[i]).normalize().toFile().isDirectory()) {
-                            System.setProperty("user.dir",
-                                               pathToFile.toString());
-                            String[] helpArray = new String[]
-                                     {"rm", "-r", names[i]};
+                    for (String name : names) {
+                        if (Paths.get(pathToFile.toString(), name).normalize().toFile().isDirectory()) {
+                            System.setProperty("user.dir", pathToFile.toString());
+                            String[] helpArray = new String[] {"rm", "-r", name};
                             shellRm(helpArray);
-                            System.setProperty("user.dir",
-                                               pathToFile.getParent().toString());
+                            System.setProperty("user.dir", pathToFile.getParent().toString());
                         }
-                        if (Paths.get(pathToFile.toString(),
-                                      names[i]).normalize().toFile().isFile()) {
-                            String[] helpArray = new String[]
-                                     {"rm", Paths.get(pathToFile.toString(),
-                                      names[i]).normalize().toString() };
+                        if (Paths.get(pathToFile.toString(), name).normalize().toFile().isFile()) {
+                            String[] helpArray = new String[] {"rm", name};
                             shellRm(helpArray);
                         }
                     }
@@ -200,19 +178,16 @@ public class Shell {
                 if (!pathToFile.toFile().delete()) {
                     shellSmthWrong("rm");
                 }
-            
-            } catch (InvalidPathException invExcept) {
+            } catch (InvalidPathException invException) {
                 shellInvalidName("rm", args[2]);
-            } catch (SecurityException secExcept) {
+            } catch (SecurityException secException) {
                 shellSecurity("rm", args[2]);
             }
         } else {
             try {
                 Path pathToFile = Paths.get(args[1]).normalize();
-                
                 if (!pathToFile.isAbsolute()) {
-                    pathToFile = Paths.get(System.getProperty("user.dir"),
-                                           args[1]).normalize();
+                    pathToFile = Paths.get(System.getProperty("user.dir"), args[1]).normalize();
                 }
                 if (!pathToFile.toFile().exists()) {
                     shellNotExist("rm", args[1]);
@@ -223,9 +198,9 @@ public class Shell {
                 if (!pathToFile.toFile().delete()) {
                     shellSmthWrong("rm");
                 }
-            } catch (InvalidPathException invExcept) {
+            } catch (InvalidPathException invException) {
                 shellInvalidName("rm", args[1]);
-            } catch (SecurityException secExcept) {
+            } catch (SecurityException secException) {
                 shellSecurity("rm", args[1]);
             }
         }
@@ -235,18 +210,14 @@ public class Shell {
         if ((args.length != 3) && (args.length != 4)) {
             shellWrongQuantity("cp");
         }
-        if ((args[args.length - 1].isEmpty())
-         || (args[args.length - 2].isEmpty())) {
+        if ((args[args.length - 1].isEmpty()) || (args[args.length - 2].isEmpty())) {
             shellNoName("cp");
         }
-        
         if (args.length == 3) {
             try {
                 Path pathToFile = Paths.get(args[1]).normalize();
                 if (!pathToFile.isAbsolute()) {
-                    pathToFile = Paths.get(
-                                           System.getProperty("user.dir").toString(),
-                                           pathToFile.toString()).normalize();
+                    pathToFile = Paths.get(System.getProperty("user.dir").toString(), pathToFile.toString()).normalize();
                 }
                 if (!pathToFile.toFile().exists()) {
                     shellNotExist("cp", args[1]);
@@ -256,28 +227,23 @@ public class Shell {
                 }
                 Path pathToNewFile = Paths.get(args[2]).normalize();
                 if (!pathToNewFile.isAbsolute()) {
-                    pathToNewFile = Paths.get(
-                                              System.getProperty("user.dir").toString(),
-                                              pathToNewFile.toString()).normalize();
+                    pathToNewFile = Paths.get(System.getProperty("user.dir").toString(), pathToNewFile.toString()).normalize();
                 }
                 if (!pathToNewFile.getParent().toFile().exists()) {
                     shellNotExist("cp", pathToNewFile.getParent().toString());
                 }
                 if (pathToNewFile.toFile().isDirectory()) {
-                    pathToNewFile = Paths.get(pathToNewFile.toString(),
-                                              pathToFile.getFileName().toString()).normalize();
+                    pathToNewFile = Paths.get(pathToNewFile.toString(), pathToFile.getFileName().toString()).normalize();
                 }
                 if (pathToNewFile.toString().equals(pathToFile.toString())) {
                     shellEqualNames("cp");
                 }
-                Files.copy(pathToFile, pathToNewFile,
-                           StandardCopyOption.COPY_ATTRIBUTES,
-                           StandardCopyOption.REPLACE_EXISTING);
-            } catch (InvalidPathException invExcept) {
+                Files.copy(pathToFile, pathToNewFile, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+            } catch (InvalidPathException invException) {
                 shellInvalidName("cp", args[1]);
-            } catch (SecurityException secExcept) {
+            } catch (SecurityException secException) {
                 shellSecurity("cp", args[1]);
-            } catch (IOException ioExcept) {
+            } catch (IOException ioException) {
                 shellWrongInput("cp");
             }
         } else {
@@ -287,8 +253,7 @@ public class Shell {
             try {
                 Path pathToFile = Paths.get(args[2]).normalize();
                 if (!pathToFile.isAbsolute()) {
-                    pathToFile = Paths.get(System.getProperty("user.dir").toString(),
-                                           pathToFile.toString()).normalize();
+                    pathToFile = Paths.get(System.getProperty("user.dir").toString(), pathToFile.toString()).normalize();
                 }
                 if (!pathToFile.toFile().exists()) {
                     shellNotExist("cp", args[2]);
@@ -298,59 +263,43 @@ public class Shell {
                 }
                 Path pathToNewFile = Paths.get(args[3]).normalize();
                 if (!pathToNewFile.isAbsolute()) {
-                    pathToNewFile = Paths.get(System.getProperty("user.dir").toString(),
-                                              pathToNewFile.toString()).normalize();
+                    pathToNewFile = Paths.get(System.getProperty("user.dir").toString(), pathToNewFile.toString()).normalize();
                 }
                 if (!pathToNewFile.toFile().isDirectory()) {
                     shellNotDirectory("cp", args[3]);
                 }
-                if (Paths.get(pathToNewFile.toString(),
-                              pathToFile.getFileName().toString()).
-                              normalize().toString().equals(pathToFile.toString())) {
+                if (Paths.get(pathToNewFile.toString(), pathToFile.getFileName().toString()).normalize().toString().equals(pathToFile.toString())) {
                     shellEqualNames("cp");
                 }
                 if (pathToNewFile.toString().startsWith(pathToFile.toString())) {
                     shellIntoSelf("cp");
                 }
-                
-                pathToNewFile = Paths.get(pathToNewFile.toString(),
-                                          pathToFile.getFileName().toString()).normalize();
+                pathToNewFile = Paths.get(pathToNewFile.toString(), pathToFile.getFileName().toString()).normalize();
                 if (!pathToNewFile.toFile().exists()) {
                     if (!pathToNewFile.toFile().mkdir()) {
                         shellNotMkdir("mkdir", args[1]);
                     }
                 }
-                
                 String[] names = pathToFile.toFile().list();
-                
                 if (names.length != 0) {
-                    for (int i = 0; i < names.length; ++i) {
-                        if (Paths.get(pathToFile.toString(),
-                                      names[i]).normalize().toFile().isDirectory()) {
-                            System.setProperty("user.dir",
-                                               pathToFile.toString());
-                            String[] helpArray = new String[]
-                                     {"cp", "-r", names[i],
-                                      pathToNewFile.toString() };
+                    for (String name : names) {
+                        if (Paths.get(pathToFile.toString(), name).normalize().toFile().isDirectory()) {
+                            System.setProperty("user.dir", pathToFile.toString());
+                            String[] helpArray = new String[] {"cp", "-r", name, pathToNewFile.toString()};
                             shellCp(helpArray);
-                            System.setProperty("user.dir",
-                                               pathToFile.getParent().toString());
+                            System.setProperty("user.dir", pathToFile.getParent().toString());
                         }
-                        if (Paths.get(pathToFile.toString(),
-                                      names[i]).normalize().toFile().isFile()) {
-                            String[] helpArray = new String[]
-                                     {"cp", Paths.get(pathToFile.toString(),
-                                      names[i]).normalize().toString(),
-                                      pathToNewFile.toString()};
+                        if (Paths.get(pathToFile.toString(), name).normalize().toFile().isFile()) {
+                            String[] helpArray = new String[] {"cp", name, pathToNewFile.toString()};
                             shellCp(helpArray);
                         }
                     }
                 }
-            } catch (InvalidPathException invExcept) {
+            } catch (InvalidPathException invException) {
                 shellInvalidName("cp", args[2]);
-            } catch (SecurityException secExcept) {
+            } catch (SecurityException secException) {
                 shellSecurity("cp", args[2]);
-            } catch (IOException ioExcept) {
+            } catch (IOException ioException) {
                 shellWrongInput("cp");
             }
         }
@@ -360,16 +309,14 @@ public class Shell {
         if (args.length != 3) {
             shellWrongQuantity("mv");
         }
-        if ((args[args.length - 1].isEmpty())
-         || (args[args.length - 2].isEmpty())) {
+        if ((args[args.length - 1].isEmpty()) || (args[args.length - 2].isEmpty())) {
             shellNoName("mv");
         }
         
         try {
             Path pathToFile = Paths.get(args[1]).normalize();
             if (!pathToFile.isAbsolute()) {
-                pathToFile = Paths.get(System.getProperty("user.dir").toString(),
-                                       pathToFile.toString()).normalize();
+                pathToFile = Paths.get(System.getProperty("user.dir").toString(), pathToFile.toString()).normalize();
             }
             if (!pathToFile.toFile().exists()) {
                 shellNotExist("mv", args[1]);
@@ -377,56 +324,47 @@ public class Shell {
             if (pathToFile.toFile().isFile()) {
                 Path pathToNewFile = Paths.get(args[2]).normalize();
                 if (!pathToNewFile.isAbsolute()) {
-                pathToNewFile = Paths.get(System.getProperty("user.dir").toString(),
-                                          pathToNewFile.toString()).normalize();
+                    pathToNewFile = Paths.get(System.getProperty("user.dir").toString(), pathToNewFile.toString()).normalize();
                 }
                 if (!pathToNewFile.getParent().toFile().exists()) {
                     shellNotExist("mv", pathToNewFile.getParent().toString());
                 }
                 if (pathToNewFile.toFile().isDirectory()) {
-                    pathToNewFile = Paths.get(pathToNewFile.toString(),
-                                              pathToFile.getFileName().toString()).normalize();
+                    pathToNewFile = Paths.get(pathToNewFile.toString(), pathToFile.getFileName().toString()).normalize();
                 }
                 if (pathToNewFile.toString().equals(pathToFile.toString())) {
                     shellEqualNames("mv");
                 }
                 if (pathToNewFile.toFile().isDirectory()) {
-                    pathToNewFile = Paths.get(pathToNewFile.toString(),
-                                              pathToFile.getFileName().toString()).normalize();
+                    pathToNewFile = Paths.get(pathToNewFile.toString(), pathToFile.getFileName().toString()).normalize();
                 }
                 Files.move(pathToFile, pathToNewFile, StandardCopyOption.REPLACE_EXISTING);
             }
             if (pathToFile.toFile().isDirectory()) {
                 Path pathToNewFile = Paths.get(args[2]).normalize();
                 if (!pathToNewFile.isAbsolute()) {
-                    pathToNewFile = Paths.get(System.getProperty("user.dir").toString(),
-                                              pathToNewFile.toString()).normalize();
+                    pathToNewFile = Paths.get(System.getProperty("user.dir").toString(), pathToNewFile.toString()).normalize();
                 }
                 if (!pathToNewFile.getParent().toFile().exists()) {
                     shellNotExist("mv", pathToNewFile.getParent().toString());
                 }
-                if (Paths.get(pathToNewFile.toString(),
-                              pathToFile.getFileName().toString()).
-                              normalize().toString().equals(pathToFile.toString())) {
+                if (Paths.get(pathToNewFile.toString(), pathToFile.getFileName().toString()).normalize().toString().equals(pathToFile.toString())) {
                     shellEqualNames("cp");
                 }
                 if (pathToNewFile.toString().startsWith(pathToFile.toString())) {
                     shellIntoSelf("mv");
                 }
                 
-                String[] helpArray1 = new String[]
-                         {"cp", "-r", pathToFile.toString(),
-                          pathToNewFile.toString()};
+                String[] helpArray1 = new String[] {"cp", "-r", pathToFile.toString(), pathToNewFile.toString()};
                 shellCp(helpArray1);
-                String[] helpArray2 = new String[]
-                         {"rm", "-r", pathToFile.toString()};
+                String[] helpArray2 = new String[] {"rm", "-r", pathToFile.toString()};
                 shellRm(helpArray2);
             }
-        } catch (InvalidPathException invExcept) {
+        } catch (InvalidPathException invException) {
             shellInvalidName("mv", args[1]);
-        } catch (SecurityException secExcept) {
+        } catch (SecurityException secException) {
             shellSecurity("mv", args[1]);
-        } catch (IOException ioExcept) {
+        } catch (IOException ioException) {
             shellWrongInput("mv");
         }
     }
@@ -435,15 +373,14 @@ public class Shell {
         if (args.length != 1) {
             shellWrongQuantity("ls");
         }
-
         try {
             String[] names = new File(System.getProperty("user.dir")).list();
             if (names.length != 0) {
-                for (int i = 0; i < names.length; ++i) {
-                    System.out.println(names[i]);
+                for (String name : names) {
+                    System.out.println(name);
                 }
             }
-        } catch (SecurityException secExcept) {
+        } catch (SecurityException secException) {
             shellAccessProhibited("ls", args[1]);
         }
     }
@@ -453,7 +390,6 @@ public class Shell {
         {
             shellWrongQuantity("exit");
         }
-        
         System.exit(SUCCESS);
     }
     
@@ -464,10 +400,8 @@ public class Shell {
         if (args[1].isEmpty()) {
             shellNoName("cat");
         }
-        
         try {
-            File fileForCat = Paths.get(System.getProperty("user.dir"),
-                                        args[1]).normalize().toFile();
+            File fileForCat = Paths.get(System.getProperty("user.dir"), args[1]).normalize().toFile();
             if (!fileForCat.exists()) {
                 shellNotExist("cat", args[1]);
             }
@@ -481,9 +415,9 @@ public class Shell {
             } catch (IOException ioExcept) {
                 shellWrongInput("cat");
             }
-        } catch (InvalidPathException invExcept) {
+        } catch (InvalidPathException invException) {
             shellInvalidName("cat", args[1]);
-        } catch (SecurityException secExcept) {
+        } catch (SecurityException secException) {
             shellSecurity("cat", args[1]);
         }
     }
