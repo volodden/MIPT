@@ -1,193 +1,132 @@
 package ru.fizteh.fivt.students.Volodin_Denis.FileMap;
 
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-public class FileMap {
-    private static final int SUCCESS = 0;
-    private static final int ERROR = 1;
+public class DataBase {
 
-    private static String dbPath;
-    private static DataBase database;
+    private String databasePath;
+    private Map<String, String> database;
 
-    public static void main(final String[] args) {
+    public DataBase(final String dbPath) throws Exception {
+        databasePath = dbPath;
+        database = new HashMap<String, String>();
+        if (Paths.get(databasePath).normalize().toFile().exists()) {
+            readFromDisk();
+        } else {
+            File file = new File(databasePath);
+            file.createNewFile();
+        }
+    }
+
+    public String[] list() throws Exception {
         try {
-            dbPath = System.getProperty("db.file");
-            if (dbPath == null) {
-                System.err.println("Path was not found.");
-                System.exit(ERROR);
+            if (database.isEmpty()) {
+                return new String[0];
             }
-            database = new DataBase(dbPath);
-            if (args.length == 0) {
-                // Interactive mode.
-                Scanner scanner = new Scanner(System.in);
-                try {
-                    do {
-                        System.out.print("$ ");
-                        String[] input = scanner.nextLine().split(";");
-                        for (int i = 0; i < input.length; ++i) {
-                            if (input[i].length() > 0) {
-                                String[] buffer = input[i].trim().split("\\s+");
-                                try {
-                                    filemapParser(buffer);
-                                } catch (Exception except) {
-                                    System.err.println(except.getMessage());
-                                }
-                            }
-                        }
-                    } while(true);
-                } catch (Exception except) {
-                    System.err.println("\nSmth wrong.");
-                    scanner.close();
-                    System.exit(ERROR);
-                }
-                scanner.close();
-            } else {
-                try {
-                    StringBuilder helpArray = new StringBuilder();
-                    for (int i = 0; i < args.length; ++i) {
-                        helpArray.append(args[i]).append(' ');
-                    }
-                    String longStr = helpArray.toString();
-                    String[] input = longStr.split(";");
-                    for (int i = 0; i < input.length; ++i) {
-                        if (input[i].length() > 0) {
-                            String[] buffer = input[i].trim().split("\\s+");
-                            try {
-                                filemapParser(buffer);
-                            } catch (Exception except) {
-                                System.err.println(except.getMessage());
-                            }
-                        }
-                    }
-                } catch (Exception except) {
-                    System.err.println("\nSmth wrong.");
-                    System.exit(ERROR);
-                }
+            Set<String> keysList = database.keySet();
+            String[] listKeys = new String[database.size()];
+            int i = 0;
+            for (String key : keysList) {
+                listKeys[i] = key;
+                ++i;
             }
-        } catch (Exception except) {
-            System.err.println(except.getMessage());
-            System.exit(ERROR);
+            return listKeys;
+        } catch (Exception e) {
+            filemapSmthWrong("list", e.getMessage());
         }
-        System.exit(SUCCESS);
+        return new String[0]; // Unreachable code, add return to ignore Eclipse warning.
     }
 
-    //
-    // Basic commands.
-    //
-    // Begin.
-    //
-
-    private static void filemapPut(final String[] args) throws Exception {
-        if (args.length != 3) {
-            filemapWrongQuantity("put");
-        }
-        if ((args[1].isEmpty()) || (args[2].isEmpty())) {
-            filemapWrongInput("put");
-        }
-
-        String value = database.search(args[1]);
-        if (value == null) {
-            System.out.println("new");
-        } else {
-            System.out.println("overwrite");
-            System.out.println(value);
-        }
-        database.put(args[1], args[2]);
-        database.writeOnDisk();
-    }
-
-    private static void filemapGet(final String[] args) throws Exception {
-        if (args.length != 2) {
-            filemapWrongQuantity("get");
-        }
-        if (args[1].isEmpty()) {
-            filemapWrongInput("get");
-        }
-
-        String value = database.search(args[1]);
-        if (value == null) {
-            System.out.println("not found");
-        } else {
-            System.out.println("found");
-            System.out.println(value);
+    public void put(final String key, final String value) throws Exception {
+        try {
+            database.put(key, value);
+        } catch (Exception e) {
+            filemapSmthWrong("put", e.getMessage());
         }
     }
 
-    private static void filemapRemove(final String[] args) throws Exception {
-        if (args.length != 2) {
-            filemapWrongQuantity("remove");
+    public String search(final String key) throws Exception {
+        try {
+            return database.get(key);
+        } catch (Exception e) {
+            filemapSmthWrong("search", e.getMessage());
         }
-        if (args[1].isEmpty()) {
-            filemapWrongInput("remove");
-        }
-
-        String value = database.search(args[1]);
-        if (value == null) {
-            System.out.println("not found");
-        } else {
-            database.remove(args[1]);
-            System.out.println("removed");
-        }
-        database.writeOnDisk();
+        return database.get(key); // Unreachable code, add return to ignore Eclipse warning.
     }
 
-    private static void filemapList(final String[] args) throws Exception {
-        if (args.length != 1) {
-            filemapWrongQuantity("list");
+    public void remove(final String key) throws Exception {
+        try {
+            database.remove(key);
+        } catch (Exception e) {
+            filemapSmthWrong("remove", e.getMessage());
         }
+    }
 
-        String[] keys = database.list();
-        if (keys.length == 0) {
-            System.out.println("");
-        } else {
-            for (int i = 0; i + 1 < keys.length; ++i) {
-                System.out.print(keys[i] + ", ");
+    public void readFromDisk() throws Exception {
+        String key;
+        String value;
+        FileInputStream input = new FileInputStream(databasePath);
+        FileChannel channel = input.getChannel();
+        ByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+        try {
+            while (buffer.hasRemaining()) {
+                byte[] word = new byte[buffer.getInt()];
+                buffer.get(word, 0, word.length);
+                key = new String(word, "UTF-8");
+                
+                word = new byte[buffer.getInt()];
+                buffer.get(word, 0, word.length);
+                value = new String(word, "UTF-8");
+                
+                database.put(key, value);
             }
-            System.out.println(keys[keys.length - 1]);
+            input.close();
+        } catch (Exception e) {
+            input.close();
+            filemapErrorRead("read");
         }
     }
 
-    private static void filemapExit(final String[] args) throws Exception {
-        if (args.length != 1) {
-            filemapWrongQuantity("exit");
-        }
-
-        System.exit(SUCCESS);
-    }
-
-    //
-    // Basic commands.
-    //
-    // End.
-    //
-
-    private static void filemapParser(final String[] args) throws Exception {
-        switch (args[0]) {
-            case "put":
-                filemapPut(args);
-                break;
-            case "get":
-                filemapGet(args);
-                break;
-            case "remove":
-                filemapRemove(args);
-                break;
-            case "list":
-                filemapList(args);
-                break;
-            case "exit":
-                filemapExit(args);
-                break;
-            default:
-                System.err.println("Command does not exist: [" + args[0] + "]");
+    public void writeOnDisk() throws Exception {
+        FileOutputStream output = new FileOutputStream(databasePath);
+        Set<String> keyList = database.keySet();
+        try {
+            for (String key : keyList) {
+                ByteBuffer buffer1 = ByteBuffer.allocate(4);
+                byte[] keyByte = buffer1.putInt(key.getBytes("UTF-8").length).array();
+                output.write(keyByte);
+                output.write(key.getBytes("UTF-8"));
+                
+                
+                ByteBuffer buffer2 = ByteBuffer.allocate(4);
+                byte[] valueByte = buffer2.putInt(database.get(key).getBytes("UTF-8").length).array();
+                output.write(valueByte);
+                output.write(database.get(key).getBytes("UTF-8"));
+            }
+            output.close();
+        } catch (Exception e) {
+            output.close();
+            filemapErrorWrite("write");
         }
     }
 
-    private static void filemapWrongQuantity(final String commandName) throws Exception {
-        throw new Exception(commandName + ": wrong quantity of arguments.");
+    private void filemapErrorRead(final String commandName) throws Exception {
+        throw new Exception(commandName + " : error reading from file");
     }
-
-    private static void filemapWrongInput(final String commandName) throws Exception {
-        throw new Exception(commandName + ": wrong input.");
+    
+    private void filemapErrorWrite(final String commandName) throws Exception {
+        throw new Exception(commandName + " : error writing to file");
+    }
+    
+    private void filemapSmthWrong(final String commandName, final String message) throws Exception {
+        throw new Exception(commandName + " :" + message);
     }
 }
