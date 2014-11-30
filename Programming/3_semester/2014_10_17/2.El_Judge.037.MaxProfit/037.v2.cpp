@@ -8,7 +8,7 @@ class Answer
 private:
 
     std::vector< int > answer;
-    std::vector< std::vector < int > > MaxSt;
+    std::vector< std::map < int, int> > MaxSt;
     std::vector< int > M;
     std::map< int, int > W;
     std::map< int, int >::iterator it;
@@ -35,17 +35,9 @@ public:
             k += Q[i];
         }
         MaxSt.resize(k+1);
-        for (int i = 0; i < MaxSt.size(); ++i)
-        {
-            MaxSt[i].resize(B+1);
-        }
         for (int i = 0; i <= k; ++i)
         {
-            MaxSt[i][0] = 0;
-        }
-        for (int i = 1; i <= B; ++i)
-        {
-            MaxSt[0][i] = -1;
+            MaxSt[i].insert(std::make_pair(0, 0));
         }
 
         int t = -1;
@@ -59,11 +51,32 @@ public:
             {
                 if (j >= M[t])
                 {
-                    MaxSt[i][j] = max(MaxSt[i-1][j], (MaxSt[i-1][j-M[t]] == -1) ? -1 : MaxSt[i-1][j-M[t]] + P[t]);
+                    if (MaxSt[i-1].find(j) != MaxSt[i-1].end())
+                    {
+                        if (MaxSt[i-1].find(j-M[t]) != MaxSt[i-1].end())
+                        {
+                            MaxSt[i].insert(std::make_pair(j, max(MaxSt[i-1].find(j)->second,
+                                                                  MaxSt[i-1].find(j-M[t])->second + P[t])));
+                        }
+                        else
+                        {
+                            MaxSt[i].insert(std::make_pair(j, MaxSt[i-1].find(j)->second));
+                        }
+                    }
+                    else
+                    {
+                        if (MaxSt[i-1].find(j-M[t]) != MaxSt[i-1].end())
+                        {
+                            MaxSt[i].insert(std::make_pair(j, MaxSt[i-1].find(j-M[t])->second + P[t]));
+                        }
+                    }
                 }
                 else
                 {
-                    MaxSt[i][j] = MaxSt[i-1][j];
+                    if (MaxSt[i-1].find(j) != MaxSt[i-1].end())
+                    {
+                        MaxSt[i].insert(std::make_pair(j, MaxSt[i-1].find(j)->second));
+                    }
                 }
             }
         }
@@ -74,17 +87,17 @@ public:
         int x = 0;
         for (int i = A; i <= B; ++i)
         {
-            if (MaxSt[k][i] > MaxSt[k][x])
+            if ((MaxSt[k].find(i) != MaxSt[k].end()) && (MaxSt[k].find(i)->second > MaxSt[k].find(x)->second))
             {
                 x = i;
             }
         }
-        if (MaxSt[k][x] < A)
+        if (MaxSt[k].find(x)->second < A)
         {
             printf("-1\n");
             return;
         }
-        printf("%d\n", MaxSt[k][x]);
+        printf("%d\n", MaxSt[k].find(x)->second);
         answer = std::vector< int >(N, 0);
         it = W.end();
         --it;
@@ -101,11 +114,11 @@ private:
     {
         while (true)
         {
-            if (MaxSt[i][j] == 0)
+            if (MaxSt[i].find(j)->second == 0)
             {
                 break;
             }
-            if (MaxSt[i-1][j] != MaxSt[i][j])
+            if ((MaxSt[i-1].find(j) == MaxSt[i-1].end()) || (MaxSt[i-1].find(j)->second != MaxSt[i].find(j)->second))
             {
                 while(it->first > i)
                 {
@@ -117,7 +130,6 @@ private:
             --i;
         }
     }
-
 };
 
 int main()
