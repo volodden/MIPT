@@ -178,8 +178,6 @@ private:
     std::multimap < int, matrix > table; // h(x) + steps; matrix
     std::vector < std::pair < int , char > > memory;
 
-    short T[16] = {0, -1, -1, -1, -1, -1, 1, 2, 3, -1, 4, 5, 6, -1, 7, 8};
-
 public:
 
     Vosm(short temp[16])
@@ -220,6 +218,7 @@ private:
 
     short bijection(short n) const
     {
+        short T[16] = {0, -1, -1, -1, -1, -1, 1, 2, 3, -1, 4, 5, 6, -1, 7, 8};
         if ((n >= 0) && (n <= 16))
         {
             return T[n];
