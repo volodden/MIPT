@@ -207,7 +207,7 @@ public:
         table.insert(std::make_pair(0, start));
         memory.push_back(std::make_pair(-1, 'q'));
         result =  AStar();
-        for (int i = 0; i < result.size() / 2; ++i)
+        for (unsigned int i = 0; i < result.size() / 2; ++i)
         {
             char c = result[i];
             result[i] = result[result.size()-1-i];
@@ -360,7 +360,7 @@ public:
         std::vector < char > result = temp.findSolve();
         if (result[0] != 'q')
         {
-            for (int i = 0; i < result.size(); ++i)
+            for (unsigned int i = 0; i < result.size(); ++i)
             {
                 std::cout << result[i];
             }
@@ -1131,10 +1131,6 @@ private:
 
 int main()
 {
-    /*  Links:
-        http://www.gamefile.ru/games/15puzzle/
-        http://megacuber.com/index.php?page=pyatnashki__prostaya_igra_s_neprostyim_resheniem
-    */
     Pyatn doska;
     doska.findSolve();
     return 0;
