@@ -159,13 +159,13 @@ public:
             bool flag = true;
             for (int j = 0; j < M; ++j)
             {
-                if (road.intersection(moats[j]) == true)
+                if (road.intersection(moats[j]))
                 {
                     flag = false;
                     break;
                 }
             }
-            if (flag == true)
+            if (flag)
             {
                 distance[s].insert(std::make_pair(*it, road.lengthSquare()));
             }
