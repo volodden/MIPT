@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdio>
 #include <vector>
 
 class RMQSparseTable
@@ -32,7 +32,7 @@ public:
         for (int i = 0; i < N; ++i)
         {
             float k;
-            std::cin >> k;
+            scanf("%f", &k);
             ST[0][i] = k;
         }
         int k = logarithm[ST[0].size()];
@@ -69,14 +69,14 @@ private:
 int main()
 {
     int N = 0;
-    std::cin >> N;
+    scanf("%d", &N);
     RMQSparseTable rmq = RMQSparseTable(N);
-    std::cin >> N;
+    scanf("%d", &N);
     int a, b;
     for (int i = 0; i < N; ++i)
     {
-        std::cin >> a >> b;
-        std::cout << rmq.min(a, b) << '\n';
+        scanf("%d %d", &a, &b);
+        printf("%f\n", rmq.min(a, b));
     }
     return 0;
 }
