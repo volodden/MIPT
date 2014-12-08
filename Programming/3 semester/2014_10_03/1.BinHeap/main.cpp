@@ -1,8 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <memory>
-#include <list>
 
 template < typename K, typename V, typename Compare = std::less < K > >
 class BinNode
@@ -98,6 +94,8 @@ public:
             }
             next = x->sibling;
         }
+        delete other;
+        return *this;
     }
 
     void binHeapInsert(BinNode<K, V>* x)
@@ -145,9 +143,10 @@ public:
             listChildrens->sibling = temp;
             listChildrens->parent = 0;
         }
-        BinHeap<K, V> temp;
+        BinHeap<K, V> temp = new BinHeap<K, V>();
         temp.head = listChildrens;
         *this = binHeapUnion(*this, temp);
+        delete temp;
         return minNode;
     }
 
@@ -176,7 +175,8 @@ public:
     {
         K key = binHeapMinimum()->key;
         binHeapDecreaseKey(node, key - 1);
-        binHeapExtract();
+        BinNode<K, V>* tempNode = binHeapExtract();
+        delete *tempNode;
     }
 
 private:
