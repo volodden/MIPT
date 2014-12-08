@@ -56,13 +56,16 @@ public:
 
     BinHeap binHeapUnion(BinHeap& other)
     {
-        head = binMerge(head, other.head);
-        if (head == 0)
+        BinHeap<K, V> temp = new BinHeap<K, V>();
+        temp.head = binMerge(head, other.head);
+        if (temp.head == 0)
         {
-            return *this;
+            delete *this;
+            delete other;
+            return temp;
         }
         BinNode<K, V>* prev = 0;
-        BinNode<K, V>* x = head;
+        BinNode<K, V>* x = temp.head;
         BinNode<K, V>* next = x->sibling;
         while (next != 0)
         {
@@ -82,7 +85,7 @@ public:
                 {
                     if (prev == 0)
                     {
-                        head = next;
+                        temp.head = next;
                     }
                     else
                     {
@@ -95,7 +98,8 @@ public:
             next = x->sibling;
         }
         delete other;
-        return *this;
+        delete *this;
+        return temp;
     }
 
     void binHeapInsert(BinNode<K, V>* x)
