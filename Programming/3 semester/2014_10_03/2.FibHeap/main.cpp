@@ -161,7 +161,21 @@ public:
 
     void fibHeapDecreaseKey(FibNode<K, V>* node, K key)
     {
-
+        if (node->key <= key)
+        {
+            return;
+        }
+        node->key = key;
+        FibNode<K, V>* y = node->parent;
+        if ((y != 0) && (node->key < y->key))
+        {
+            cut(node, y);
+            cascadingCut(y);
+        }
+        if (node->key < min->key)
+        {
+            min = node;
+        }
     }
 
     void fibHeapDelete(FibNode<K, V>* node)
@@ -246,6 +260,44 @@ private:
             x->child->right = y;
         }
         y->mark = false;
+    }
+
+    void cut(FibNode<K, V>* x, FibNode<K, V>* y)
+    {
+        if (x->left != x)
+        {
+            x->left->right = x->right;
+            x->right->left = x->left;
+            y->child = x->left;
+        }
+        else
+        {
+            y->child = 0;
+        }
+        y->degree -= 1;
+        x->parent = 0;
+        x->mark = false;
+        x->left = min;
+        x->right = min->right;
+        min->right->left = x;
+        min->right = x;
+    }
+
+    void cascadingCut(FibNode<K, V>* y)
+    {
+        FibNode<K, V>* z = y->parent;
+        if (z != 0)
+        {
+            if (!(y->mark))
+            {
+                y->mark = true;
+            }
+            else
+            {
+                cut(y, z);
+                cascadingCut(z);
+            }
+        }
     }
 };
 
