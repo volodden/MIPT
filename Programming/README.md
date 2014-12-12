@@ -37,23 +37,23 @@
 1. Реализовать алгоритм Тарьяна.
 2. Реализовать алгоритм Форд-Беллмана.
 3. Реализовать алгоритм Дейкстры.
-4. Задача с acm.mipt.ru №55: Граница.
-5. Задача с acm.mipt.ru №92: Пожарные станции.
+4. Задача с acm.mipt.ru №55: [Граница](http://acm.mipt.ru/judge/problems.pl?problem=055).
+5. Задача с acm.mipt.ru №92: [Пожарные станции](http://acm.mipt.ru/judge/problems.pl?problem=092).
 6. Реализовать алгоритм Флойда-Уоршолла.
-7. Задача с acm.mipt.ru №89: Восьминашнки.
-8. Задача с acm.mipt.ru №91: Пятнашки.
+7. Задача с acm.mipt.ru №89: [Восьминашнки](http://acm.mipt.ru/judge/problems.pl?problem=089).
+8. Задача с acm.mipt.ru №91: [Пятнашки](http://acm.mipt.ru/judge/problems.pl?problem=091).
 9. Релизовать биномиальную кучу.
 10. Реализовать фибоначчиеву кучу.
-11. Задача с acm.mipt.ru №55: Граница. Решить с помощью фибоначчиевой кучи.
-12. Задача с acm.mipt.ru №20: Остров прямых дорог. Решить с помощью алгоритма Прима.
-13. Задача с acm.mipt.ru №20: Остров прямых дорог. Решить с помощью алгоритма Крускала.
-14. Задача с acm.mipt.ru №83: SAT-2.
-15. Задача с acm.mipt.ru №37: Максимизация прибыли.
+11. Задача с acm.mipt.ru №55: [Граница](http://acm.mipt.ru/judge/problems.pl?problem=055). Решить с помощью фибоначчиевой кучи.
+12. Задача с acm.mipt.ru №20: [Остров прямых дорог](http://acm.mipt.ru/judge/problems.pl?problem=020). Решить с помощью алгоритма Прима.
+13. Задача с acm.mipt.ru №20: [Остров прямых дорог](http://acm.mipt.ru/judge/problems.pl?problem=020). Решить с помощью алгоритма Крускала.
+14. Задача с acm.mipt.ru №83: [SAT-2](http://acm.mipt.ru/judge/problems.pl?problem=083).
+15. Задача с acm.mipt.ru №37: [Максимизация прибыли](http://acm.mipt.ru/judge/problems.pl?problem=037).
 16. Реализовать алгоритм Форда-Фалкерсона.
-17. Задача с acm.mipt.ru №71: Провода.
+17. Задача с acm.mipt.ru №71: [Провода](http://acm.mipt.ru/judge/problems.pl?problem=071).
 18. Реалзиовать алгоритм проталкивания предпотока.
-19. Задача с acm.mipt.ru №105: RMQ. Решить с помощью дерева.
-20. Задача с acm.mipt.ru №105: RMQ. Решить с помощью Sparse Table.
+19. Задача с acm.mipt.ru №105: [RMQ](http://acm.mipt.ru/judge/problems.pl?problem=105). Решить с помощью дерева.
+20. Задача с acm.mipt.ru №105: [RMQ](http://acm.mipt.ru/judge/problems.pl?problem=105). Решить с помощью Sparse Table.
 21. Решить задачу: найти период строки. Вывести длину периода.
 22. Реализовать алгоритм Ахо-Корасик.
 23. Реализовать наивную версию суффиксного дерева (задача с семинара).
