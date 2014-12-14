@@ -13,7 +13,6 @@ private:
 	{
 
 		char vowel[] = { 'a', 'e', 'j', 'i', 'o', 'u', '5', '7', '8', '9' };
-
 		for (int i = 0; i < 10; ++i)
 		{
 			if (vowel[i] == letter)
