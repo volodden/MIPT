@@ -16,7 +16,7 @@ public:
         t = 1;
         while (t < N)
         {
-            t *= 2;
+            t = t << 2;
         }
         tree.resize(2 * t - 1);
         m = -1;
