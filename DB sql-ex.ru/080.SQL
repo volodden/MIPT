@@ -1,0 +1,8 @@
+SELECT DISTINCT P.maker
+FROM Product AS P
+
+EXCEPT
+
+SELECT DISTINCT P.maker
+FROM Product AS P
+WHERE (P.type = 'PC') AND (P.model NOT IN (SELECT model FROM PC))

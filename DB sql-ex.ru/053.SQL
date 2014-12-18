@@ -1,0 +1,3 @@
+SELECT CAST(AVG(CAST(numGuns AS NUMERIC(6, 2))) AS NUMERIC(6, 2))
+FROM Classes
+WHERE type = 'bb'
