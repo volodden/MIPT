@@ -64,6 +64,6 @@
 26. Решить задачу: даны две строки. Вывести максимальные совпадающие подслова для первого слова и каждого из слов, начинающихся с каждого символа второго слова.
 27. Реализовать декартово дерево.
 28. Написать внешнюю сортировку.
-30. Задача с acm.mipt.ru №004: [RMQ](http://acm.mipt.ru/judge/problems.pl?problem=004).
-31. Задача с acm.mipt.ru №112: [RMQ](http://acm.mipt.ru/judge/problems.pl?problem=112).
-32. Задача с acm.mipt.ru №123: [RMQ](http://acm.mipt.ru/judge/problems.pl?problem=123).
+30. Задача с acm.mipt.ru №004: [Атлеты](http://acm.mipt.ru/judge/problems.pl?problem=004).
+31. Задача с acm.mipt.ru №112: [Лабиринт](http://acm.mipt.ru/judge/problems.pl?problem=112).
+32. Задача с acm.mipt.ru №123: [LCA problem](http://acm.mipt.ru/judge/problems.pl?problem=123).
