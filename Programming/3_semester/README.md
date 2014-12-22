@@ -25,7 +25,7 @@
 |19|Flow Push|31.10.2014|Загрузить
 |20|105 RMQ.Tree|31.10.2014|Да
 |21|105 RMQ.Sparse Table|07.11.2014|Да
-|22|Period|07.11.2014|
+|22|Period|07.11.2014|Да
 |23|Aho-Corasick|14.11.2014|
 |24|SufTree.Square|21.12.2014|Загрузить
 |25|SufTree.WithLinks|21.12.2014|
