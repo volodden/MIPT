@@ -22,7 +22,7 @@
 |16|El_Judge.037.MaxProfit|17.10.2014|Почти
 |17|Flow Ford|24.10.2014|Да
 |18|El_Judge.071.Cables|24.10.2014|Да
-|19|Flow Push|31.10.2014|Загрузить
+|19|Flow Push|31.10.2014|Да
 |20|El_Judge.105.RMQ.Tree|31.10.2014|Да
 |21|El_Judge.105.RMQ.SparseTable|07.11.2014|Да
 |22|Period|07.11.2014|Да
