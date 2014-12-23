@@ -27,7 +27,7 @@
 |21|El_Judge.105.RMQ.SparseTable|07.11.2014|Да
 |22|Period|07.11.2014|Да
 |23|Aho-Corasick|14.11.2014|Да
-|24|SufTree.Square|21.12.2014|Загрузить
+|24|SufTree.Square|21.12.2014|Да
 |25|SufTree.WithLinks|21.12.2014|
 |26|Diff|28.12.2014|
 |27|DecTree|05.12.2014|Да
