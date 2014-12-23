@@ -57,7 +57,7 @@ struct SuffixTree
 			start[code] = newStart;
 			end[code] = newEnd;
 		}
-		
+
 		int lengthForSymbol(int code)
 		{
 			return end[code] - start[code];
@@ -120,7 +120,7 @@ struct SuffixTree
 		tree.back().length = tree[node].length + 1;
 		return tree.size() - 1;
 	}
-	
+
 	SuffixTree(std::string text)
 	{
 		s = text + SuffixTree::terminationSymbol;
@@ -189,7 +189,7 @@ struct SuffixTree
 		{
 		}
 
-		std::vector < Edge > Node::getOutgoingEdges()
+		std::vector < Edge > getOutgoingEdges()
 		{
 			std::vector<Edge> listEdges;
 			for (int i = 0; i < SuffixTree::alphabetSize; ++i)
@@ -239,7 +239,7 @@ struct SuffixTree
 		{
 			return Node(suffixTree, suffixTree.tree[node].next[symbol]);
 		}
-		
+
 		int getLen()
 		{
 			return suffixTree.tree[node].lengthForSymbol(symbol);
