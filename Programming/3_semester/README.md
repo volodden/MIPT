@@ -19,7 +19,7 @@
 |13|El_Judge.020.Prima|10.10.2014|Да
 |14|El_Judge.020.Kruskal|10.10.2014|Да
 |15|El_Judge.083.Sat2|17.10.2014|Да
-|16|El_Judge.037.MaxProfit|17.10.2014|Почти
+|16|El_Judge.037.MaxProfit|17.10.2014|Да
 |17|Flow Ford|24.10.2014|Да
 |18|El_Judge.071.Cables|24.10.2014|Да
 |19|Flow Push|31.10.2014|Да
