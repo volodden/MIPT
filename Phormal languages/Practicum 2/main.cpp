@@ -147,13 +147,14 @@ public:
 
 int main()
 {
-    freopen("konvert", "r", stdin);
+    freopen("output", "r", stdin);
     freopen("syllables", "w", stdout);
 	while (!std::cin.eof())
     {
         Word word;
         std::cin >> word;
         word.printSyllables();
+        std::cout << '\n';
     }
 	return 0;
 }
