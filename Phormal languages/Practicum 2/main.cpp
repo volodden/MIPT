@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdio>
 
 class Word
 {
@@ -13,7 +14,7 @@ private:
 	{
 
 		char vowel[] = { 'a', 'e', 'j', 'i', 'o', 'u', '5', '7', '8', '9' };
-		for (int i = 0; i < 10; ++i)
+		for (int i = 0; i < sizeof(vowel); ++i)
 		{
 			if (vowel[i] == letter)
 			{
@@ -26,9 +27,22 @@ private:
 	bool isSonorant(char letter) const
 	{
 		char sonorant[] = { 'y', 'l', 'm', 'n', 'r' };
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < sizeof(sonorant); ++i)
 		{
 			if (sonorant[i] == letter)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool isConsonant(char letter) const
+	{
+		char consonant[] = { 'b', 'v', 'g', 'd', '1', 'z', 'y', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'f', 'h', 'c', '4', 'w', '2' };
+		for (int i = 0; i < sizeof(consonant); ++i)
+		{
+			if (consonant[i] == letter)
 			{
 				return true;
 			}
@@ -72,7 +86,7 @@ private:
 			if ((isVowel(word.at(i))) && (countVowels > 1))
 			{
 				--countVowels;
-				if ((i + 1 < e) && (isSonorant(word.at(i + 1))))
+				if ((i + 1 < e) && (isSonorant(word.at(i + 1)) && (i + 2 < e) && (isConsonant(word.at(i + 2)))))
 				{
 					myPrint(j, i + 2);
 					j = i + 2;
@@ -124,11 +138,22 @@ public:
 		}
 		splitOnSyllablesAndPrint(j, word.size());
 	}
+
+	friend std::istream& operator >> (std::istream& in, Word& w)
+	{
+        in >> w.word;
+	}
 };
 
 int main()
 {
-	Word word;
-	word.printSyllables();
+    freopen("konvert", "r", stdin);
+    freopen("syllables", "w", stdout);
+	while (!std::cin.eof())
+    {
+        Word word;
+        std::cin >> word;
+        word.printSyllables();
+    }
 	return 0;
 }
