@@ -11,6 +11,7 @@
 input file<br/>
 ```small text that would contain words those contain letters```<br/>
 output<br/>
+```small text that```<br/>
 02. Библиотека, реализующая интерфейс хэш-таблицы
 -----------------------------------
 #### Описание
