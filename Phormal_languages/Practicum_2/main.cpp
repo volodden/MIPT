@@ -124,7 +124,7 @@ public:
 	{
 		if (word.size() == 1)
 		{
-			std::cout << word;
+			std::cout << "[" << word << "]";
 			return;
 		}
 		int j = 0;
