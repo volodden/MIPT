@@ -1,0 +1,5 @@
+fibrec32: fibrec32.o
+	ld -o fibrec32 fibrec32.o
+
+fibrec32.o: fibrec32.s
+	gcc -c fibrec32.s

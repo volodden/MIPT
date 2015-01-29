@@ -1,0 +1,5 @@
+fibcyc32: fibcyc32.o
+	ld -o fibcyc32 fibcyc32.o
+
+fibcyc32.o: fibcyc32.s
+	gcc -c fibcyc32.s
