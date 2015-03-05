@@ -43,13 +43,13 @@ void producer(ParallelQueue<int>& tasks)
 	tasks.push(tasks.getPoisonPill());
 }
 
-void consumer(ParallelQueue<int>& tasks, int& i)
+void consumer(ParallelQueue<int>& tasks)
 {
 	int value;
 	while (tasks.pop(value))
 	{
 		std::lock_guard<std::mutex> lockForCout(mutexForCout);
-		std::cout << std::this_thread::get_id() << " " << i << ": " << value << " is " << (checkIsPrime(value) ? "" : "not ") << "prime number.\n";
+		std::cout << std::this_thread::get_id() << ": " << value << " is " << (checkIsPrime(value) ? "" : "not ") << "prime number.\n";
 	}
 }
 
@@ -60,11 +60,11 @@ int main()
 	std::vector<ThreadGuard> consumersUnderGuards;
 	
 	std::thread a(producer, std::ref(tasks));
-	ThreadGuard newqqqqq(a);
+	ThreadGuard threadGuard(a);
 
 	for (int i = 0; i < numberOfConsumers; ++i)
 	{
-		consumers.emplace_back(consumer, std::ref(tasks), std::ref(i));
+		consumers.emplace_back(consumer, std::ref(tasks));
 	}
 	for (int i = 0; i < numberOfConsumers; ++i)
 	{
