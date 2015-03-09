@@ -22,7 +22,7 @@ public:
 	void push(const T& newElement)
 	{
 		std::lock_guard<std::mutex> lock(mtx);
-		dataQueue.push(newElement);
+		dataQueue.push(std::move(newElement));
 		queueNotEmpty.notify_one();
 	}
 
@@ -35,7 +35,7 @@ public:
 		}
 		if (!dataQueue.empty())
 		{
-			returnedElement = dataQueue.front();
+			returnedElement = std::move(dataQueue.front());
 			dataQueue.pop();
 			return true;
 		}

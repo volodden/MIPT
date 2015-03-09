@@ -8,7 +8,7 @@ class ReturnedValue
 {
 public:
 
-	ReturnedValue(std::future<T> otherFut) : fut(otherFut), isValue(false)
+	ReturnedValue(std::future<T> otherFut) : fut(std::move(otherFut)), isValue(false)
 	{
 	}
 
@@ -35,7 +35,7 @@ public:
 
 private:
 
-	std::future fut;
+	std::future<T> fut;
 	bool isValue;
 	T value;
 
