@@ -10,10 +10,10 @@ void printNumber(int i = 0)
 }
 
 int main()
-{
-	/* 
+{ 
 	ThreadPool<int> tp;
-
+	
+	/*
 	// store a free function
 	std::function<void(int)> f_free = printNumber;
 	ReturnedValue<int> a = tp.submit(f_free);
@@ -27,7 +27,7 @@ int main()
 	ReturnedValue<int> c = tp.submit(f_bind);
 
 	std::cout << "a = " << a.get() << "\nb = " << b.get() << "\nc = " << c.get() << '\n';
-
 	*/
+
 	return 0;
 }

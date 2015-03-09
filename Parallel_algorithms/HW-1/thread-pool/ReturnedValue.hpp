@@ -1,14 +1,15 @@
 #ifndef RETURNED_VALUE_H_INCLUDED
 #define RETURNED_VALUE_H_INCLUDED
 
+#include <future>
+
 template<class T>
 class ReturnedValue
 {
 public:
 
-	ReturnedValue()
+	ReturnedValue(std::future<T> otherFut) : fut(otherFut), isValue(false)
 	{
-		isValue = false;
 	}
 
 	~ReturnedValue()
@@ -19,15 +20,22 @@ public:
 	{
 		if (!isValue)
 		{
-			// value = ...
-			isValue = true;
+			try
+			{
+				value = fut.get();
+				isValue = true;
+			}
+			catch (std::exception& e)
+			{
+				std::cout << "exception: " << e.what() << '\n';
+			}
 		}
 		return value;
 	}
 
 private:
 
-	// std::future
+	std::future fut;
 	bool isValue;
 	T value;
 
