@@ -1,18 +1,23 @@
 #ifndef PARALLEL_QUEUE_FOR_THREADPOOL_H_INCLUDED
 #define PARALLEL_QUEUE_FOR_THREADPOOL_H_INCLUDED
 
+#include <condition_variable>
+#include <mutex>
+#include <vector>
+#include <queue>
+
 template <class T>
-class ParallelQueue
+class ParallelQueueForThreadPool
 {
 public:
-	ParallelQueue()
+	ParallelQueueForThreadPool()
 	{
 		isEnd = false;
-	};
+	}
 
-	~ParallelQueue()
+	~ParallelQueueForThreadPool()
 	{
-	};
+	}
 
 	void push(const T& newElement)
 	{
@@ -37,7 +42,7 @@ public:
 		return false;
 	}
 
-	void shutDown() const
+	void shutDown()
 	{
 		std::unique_lock<std::mutex> lockMutex(mtx);
 		isEnd = true;

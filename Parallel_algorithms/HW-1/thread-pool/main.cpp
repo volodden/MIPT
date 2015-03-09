@@ -1,7 +1,8 @@
 #include <iostream>
 
-#include "ThreadPool.hpp"
+#include <functional>
 #include "ReturnedValue.hpp"
+#include "ThreadPool.hpp"
 
 void printNumber(int i = 0)
 {
@@ -10,6 +11,7 @@ void printNumber(int i = 0)
 
 int main()
 {
+	/* 
 	ThreadPool<int> tp;
 
 	// store a free function
@@ -26,5 +28,6 @@ int main()
 
 	std::cout << "a = " << a.get() << "\nb = " << b.get() << "\nc = " << c.get() << '\n';
 
+	*/
 	return 0;
 }
