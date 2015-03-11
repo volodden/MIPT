@@ -13,11 +13,11 @@ class ParallelQueue
 public:
 	ParallelQueue()
 	{
-	};
+	}
 
 	~ParallelQueue()
 	{
-	};
+	}
 
 	void push(const T& newElement)
 	{
@@ -27,7 +27,7 @@ public:
 		queueNotEmpty.notify_one();
 	}
 
-	bool pop(T& returnedElement)
+	T pop(T& returnedElement)
 	{
 		std::unique_lock<std::mutex> lockMutex(mtx);
 		//LockGuardForMutexInQueue lockMutex(mtx);

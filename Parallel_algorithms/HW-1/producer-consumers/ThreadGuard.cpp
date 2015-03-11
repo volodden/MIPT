@@ -1,6 +1,10 @@
 #include "ThreadGuard.h"
 
-ThreadGuard::ThreadGuard(std::thread& currentThread) : insideThread(currentThread) //std::move(currentThread))
+ThreadGuard::ThreadGuard(std::thread currentThread) : insideThread(std::move(currentThread))
+{
+}
+
+ThreadGuard::ThreadGuard(ThreadGuard&& otherThread) : insideThread(std::move(otherThread.insideThread))
 {
 }
 

@@ -7,15 +7,15 @@ class ThreadGuard
 {
 public:
 
-	ThreadGuard(std::thread& currentThread);
-
+	ThreadGuard(std::thread currentThread);
+	ThreadGuard(ThreadGuard&& otherThread);
 	~ThreadGuard();
 
 private:
-	
-	void operator =(const ThreadGuard otherLockGuard) = delete;
 
-	std::thread& insideThread;
+	ThreadGuard& operator =(const ThreadGuard& other) = delete;
+	ThreadGuard(const ThreadGuard& otherThread) = delete;
+	std::thread insideThread;
 };
 
 #endif //THREAD_GUARD_H_INCLUDED

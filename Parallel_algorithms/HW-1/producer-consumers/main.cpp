@@ -6,13 +6,9 @@
 #include "ParallelQueue.hpp"
 #include "ThreadGuard.h"
 
-
-#include <windows.h>
-
-const int numberOfConsumers = 8;
-const int numberOfTasks = 10;
+const int numberOfConsumers = 20;
+const int numberOfTasks = 50;
 const int rangeOfNumbers = 100;
-std::mutex mutexForCout;
 
 bool checkIsPrime(int value)
 {
@@ -48,7 +44,6 @@ void consumer(ParallelQueue<int>& tasks)
 	int value;
 	while (tasks.pop(value))
 	{
-		std::lock_guard<std::mutex> lockForCout(mutexForCout);
 		std::cout << std::this_thread::get_id() << ": " << value << " is " << (checkIsPrime(value) ? "" : "not ") << "prime number.\n";
 	}
 }
@@ -56,22 +51,13 @@ void consumer(ParallelQueue<int>& tasks)
 int main()
 {
 	ParallelQueue<int> tasks;
-	std::vector<std::thread> consumers;
 	std::vector<ThreadGuard> consumersUnderGuards;
 	
-	std::thread a(producer, std::ref(tasks));
-	ThreadGuard threadGuard(a);
-
+	ThreadGuard threadGuard(std::thread(producer, std::ref(tasks)));
 	for (int i = 0; i < numberOfConsumers; ++i)
 	{
-		consumers.emplace_back(consumer, std::ref(tasks));
+		consumersUnderGuards.emplace_back(std::thread(consumer, std::ref(tasks)));
 	}
-	for (int i = 0; i < numberOfConsumers; ++i)
-	{
-		consumersUnderGuards.emplace_back(consumers[i]);
-	}
-
-	int q;
-	std::cin >> q;
+	
 	return 0;
 }

@@ -8,13 +8,14 @@ class LockGuardForMutexInQueue
 public:
 
 	LockGuardForMutexInQueue(std::mutex& currentMutex);
+	LockGuardForMutexInQueue(LockGuardForMutexInQueue&& otherMutexGuard);
 	
 	~LockGuardForMutexInQueue();
 
 private:
 
-	LockGuardForMutexInQueue(LockGuardForMutexInQueue& otherLockGuard) = delete;
-	void operator =(const LockGuardForMutexInQueue otherLockGuard) = delete;
+	LockGuardForMutexInQueue(const LockGuardForMutexInQueue& otherLockGuard) = delete;
+	LockGuardForMutexInQueue& operator =(const LockGuardForMutexInQueue otherLockGuard) = delete;
 
 	std::mutex& insideMutex;
 };

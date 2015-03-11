@@ -5,6 +5,11 @@ LockGuardForMutexInQueue::LockGuardForMutexInQueue(std::mutex& currentMutex) : i
 	insideMutex.lock();
 }
 
+LockGuardForMutexInQueue::LockGuardForMutexInQueue(LockGuardForMutexInQueue&& otherMutexGuard) : insideMutex(otherMutexGuard.insideMutex)
+{
+	insideMutex.lock();
+}
+
 LockGuardForMutexInQueue::~LockGuardForMutexInQueue()
 {
 	insideMutex.unlock();
