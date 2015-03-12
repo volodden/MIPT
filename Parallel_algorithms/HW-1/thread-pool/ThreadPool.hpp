@@ -53,12 +53,12 @@ public:
 		}
 	}
 
-	std::future<T> /*ReturnedValue<T>*/ submit(std::function<T()> f)
+	std::future<T> submit(std::function<T()> f)
 	{
 		std::promise<T> prom;
 		std::future<T> fut = prom.get_future();
 		tasks.push(std::make_pair(f, std::move(prom)));
-		return fut;//ReturnedValue<T>(fut);
+		return fut;
 	}
 
 private:

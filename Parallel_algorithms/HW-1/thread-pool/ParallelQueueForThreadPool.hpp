@@ -19,7 +19,7 @@ public:
 	{
 	}
 
-	void push(const T& newElement)
+	void push(T newElement)
 	{
 		std::lock_guard<std::mutex> lock(mtx);
 		dataQueue.push(std::move(newElement));
