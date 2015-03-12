@@ -1,6 +1,5 @@
 #include <thread>
 #include <vector>
-#include <iostream>
 
 #include "HierarchicalMutex.h"
 
@@ -14,12 +13,12 @@ int main()
 	HierarchicalMutex b(3);
 	HierarchicalMutex c(2);
 
-	a.lock(levelOfThread);
-	b.lock(levelOfThread);
-	c.lock(levelOfThread);
-	c.unlock(levelOfThread);
-	b.unlock(levelOfThread);
-	a.unlock(levelOfThread);
+	a.lockWithOutEmergencyShutdown(levelOfThread);
+	b.lockWithOutEmergencyShutdown(levelOfThread);
+	c.lockWithOutEmergencyShutdown(levelOfThread);
+	c.unlockWithOutEmergencyShutdown(levelOfThread);
+	b.unlockWithOutEmergencyShutdown(levelOfThread);
+	a.unlockWithOutEmergencyShutdown(levelOfThread);
 
 	return 0;
 }

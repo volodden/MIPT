@@ -10,9 +10,11 @@ public:
 	HierarchicalMutex(int newLevel);
 	~HierarchicalMutex();
 
-	bool lock(unsigned int& value);
+	void lock(unsigned int& value);
+	bool lockWithOutEmergencyShutdown(unsigned int& value);
 
-	bool unlock(unsigned int& value);
+	void unlock(unsigned int& value);
+	bool unlockWithOutEmergencyShutdown(unsigned int& value);
 
 private:
 
