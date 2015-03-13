@@ -16,11 +16,11 @@ int main()
 		threads.push_back(std::thread([&]{
 			srand(time(NULL));
 			std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 100));
-			//for (int i = 0; i < 100000; ++i)
+			for (int i = 0; i < 1000000; ++i)
 			{
-				std::cout << "enter: " << std::this_thread::get_id() << '\n';
+				//std::cout << "enter: " << std::this_thread::get_id() << '\n';
 				barrier.enter();
-				std::cout << "exit: " << std::this_thread::get_id() << '\n';
+				//std::cout << "exit: " << std::this_thread::get_id() << '\n';
 			}
 		}));
 	}

@@ -23,7 +23,7 @@ private:
 	std::condition_variable ring;
 	std::mutex mtx;
 	int count;
-	std::atomic_int left;
+	std::atomic_int epoch;
 	std::atomic_int current;
 
 };

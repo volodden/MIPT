@@ -4,14 +4,14 @@ Barrier::Barrier()
 {
 	count = 1;
 	current = 0;
-	left = 0;
+	epoch = 0;
 }
 
 Barrier::Barrier(int newCount)
 {
 	count = newCount;
 	current = 0;
-	left = 0;
+	epoch = 0;
 }
 
 void Barrier::enter()
@@ -20,20 +20,16 @@ void Barrier::enter()
 	++current;
 	if (current != count)
 	{
-		while (left == 0)
+		int newEpoch = epoch;
+		while (newEpoch == epoch)
 		{
 			ring.wait(lock);
-		}
-		--left;
-		if (left != 0)
-		{
-			ring.notify_one();
 		}
 	}
 	else
 	{
 		current -= count;
-		left = count - 1;
-		ring.notify_one();
+		++epoch;
+		ring.notify_all();
 	}
 }
