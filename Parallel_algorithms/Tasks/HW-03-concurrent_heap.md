@@ -26,9 +26,7 @@ right-child(i) = i * 2 + 1
 ```
 std::unique_lock curr_lock(heap[i].spinlock);
 std::unique_lock left_child_lock(heap[2 * i].spinlock);
-```
 ...
-```
 curr_lock = std::move(left_child_lock);
 ```
 
