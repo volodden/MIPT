@@ -1,20 +1,20 @@
-#include "Barrier.h"
+#include "CyclicBarrier.h"
 
-Barrier::Barrier()
+CyclicBarrier::CyclicBarrier()
 {
 	count = 1;
 	current = 0;
 	epoch = 0;
 }
 
-Barrier::Barrier(int newCount)
+CyclicBarrier::CyclicBarrier(int newCount)
 {
 	count = newCount;
 	current = 0;
 	epoch = 0;
 }
 
-void Barrier::enter()
+void CyclicBarrier::enter()
 {
 	std::unique_lock<std::mutex> lock(mtx);
 	++current;

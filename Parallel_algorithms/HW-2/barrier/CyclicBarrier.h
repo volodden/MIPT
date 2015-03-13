@@ -5,14 +5,14 @@
 #include <condition_variable>
 #include <mutex>
 
-class Barrier
+class CyclicBarrier
 {
 public:
 
-	Barrier();
-	Barrier(int newCount);
+	CyclicBarrier();
+	CyclicBarrier(int newCount);
 
-	~Barrier()
+	~CyclicBarrier()
 	{
 	}
 
