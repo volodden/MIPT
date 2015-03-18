@@ -18,7 +18,7 @@ WHERE (dat.Day NOT IN (SELECT date FROM Outcome_o WHERE point = T.point)) AND (D
 END AS DI
 FROM Temp AS T
 WHERE T.inc IS NOT NULL
-1*/
+*/
 
 /* Универсальное.  */
 WITH Temp AS(SELECT ISNULL(I.point, O.point) AS point, ISNULL(I.date, O.date) AS date, I.inc, O.out
