@@ -15,7 +15,7 @@ let flipV (image: List<List<char>>) = [for x in image do yield List.rev x]
 
 let flipH (image: List<List<char>>) = List.rev image
 
-let rotation180 image = flipV (flipH image)
+let rotation180 (image: List<List<char>>) = flipV (flipH image)
 
 let rec slice = function
     | [] -> ([], [])
@@ -47,9 +47,18 @@ let rotation270 image =
     then failwith "Bad size"
     else trans (flipV image)
 
-art
-flipH art
-flipV art
-rotation90 art
-rotation270 art
-rotation180 art
+let printImage (image: List<List<char>>) =
+    if (image = [])
+    then printf "\n"
+    else for x in image do
+            for y in x do
+                printf "%c" y
+            printf "\n"
+         printf "\n"
+
+printImage (art)
+printImage (flipH art)
+printImage (flipV art)
+printImage (rotation90 art)
+printImage (rotation180 art)
+printImage (rotation270 art)
