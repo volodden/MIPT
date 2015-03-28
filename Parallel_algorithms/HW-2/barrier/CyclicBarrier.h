@@ -9,7 +9,6 @@ class CyclicBarrier
 {
 public:
 
-	CyclicBarrier();
 	CyclicBarrier(int newCount);
 
 	~CyclicBarrier()
@@ -20,11 +19,13 @@ public:
 
 private:
 
+	CyclicBarrier() = delete;
+
 	std::condition_variable ring;
 	std::mutex mtx;
 	int count;
-	std::atomic_int epoch;
-	std::atomic_int current;
+	std::atomic<int> epoch;
+	std::atomic<int> currentNumberOfThreads;
 
 };
 

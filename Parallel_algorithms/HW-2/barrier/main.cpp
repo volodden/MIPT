@@ -103,9 +103,5 @@ void rotateTest()
 int main()
 {
 	rotateTest();
-
-
-	int i;
-	std::cin >> i;
 	return 0;
 }
