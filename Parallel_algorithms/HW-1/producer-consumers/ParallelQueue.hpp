@@ -27,7 +27,7 @@ public:
 		queueNotEmpty.notify_one();
 	}
 
-	T pop(T& returnedElement)
+	bool pop(T& returnedElement)
 	{
 		std::unique_lock<std::mutex> lockMutex(mtx);
 		//LockGuardForMutexInQueue lockMutex(mtx);
