@@ -9,13 +9,13 @@ class CyclicBarrier
 {
 public:
 
-	CyclicBarrier(int newCount);
+	CyclicBarrier(size_t newThreadCount);
 
 	~CyclicBarrier()
 	{
 	}
 
-	void setCountOfThreads(int newCount);
+	void setCountOfThreads(size_t newThreadCount);
 
 	void enter();
 
@@ -25,7 +25,7 @@ private:
 
 	std::condition_variable ring;
 	std::mutex mtx;
-	int count;
+	size_t threadCount;
 	std::atomic<int> epoch;
 	std::atomic<int> currentNumberOfThreads;
 
