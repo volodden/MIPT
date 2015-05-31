@@ -18,11 +18,6 @@ MemoryAllocator::~MemoryAllocator()
 {
 }
 
-MemAlloc MemoryAllocator::createMemAlloc()
-{
-	return MemAlloc(this);
-}
-
 AllocatedMemory* MemoryAllocator::allocateMemory(size_t sizeOfNeededMemory)
 {
 	if (sizeOfNeededMemory < 1)
@@ -33,23 +28,28 @@ AllocatedMemory* MemoryAllocator::allocateMemory(size_t sizeOfNeededMemory)
 	int degree = degreeOfTwo(sizeOfNeededMemory);
 
 	int sizeOfList = listOfPointers.size();
-	if (degree > sizeOfList)
+	while (degree > sizeOfList)
 	{
 		globalMutex.lock();
+		if (degree <= sizeOfList)
+		{
+			globalMutex.unlock();
+			break;
+		}
 		while (degree > sizeOfList)
 		{
-			listOfPointers.push_back(subList());
+			listOfPointers.emplace_back(subList());
 		}
 		listOfPointers.back().first.lock();
 		globalMutex.unlock();
-		listOfPointers.back().second.push_back(std::make_pair(std::make_pair(std::mutex(), false), AllocatedMemory(degree)));
+		listOfPointers.back().second.emplace_back(std::make_pair(std::make_pair(std::mutex(), false), AllocatedMemory(degree)));
 		auto newElement = listOfPointers.back().second.back();
 		listOfPointers.back().first.unlock();
 		return &(newElement.second);
 	}
 
 	auto currentList = listOfPointers.begin();
-	for (int i = 2; i < degree; ++i)
+	for (int i = 0; i < degree; ++i)
 	{
 		++currentList;
 	}
@@ -64,17 +64,17 @@ AllocatedMemory* MemoryAllocator::allocateMemory(size_t sizeOfNeededMemory)
 		}
 	}
 	currentList->first.lock();
-	currentList->second.push_back(std::make_pair(std::make_pair(std::mutex(), false), AllocatedMemory(degree)));
+	currentList->second.emplace_back(std::make_pair(std::make_pair(std::mutex(), false), AllocatedMemory(degree)));
 	AllocatedMemory memory = currentList->second.back().second;
 	currentList->first.unlock();
-	return &memory;
+	return &(memory);
 }
 
 void MemoryAllocator::retrieveMemory(AllocatedMemory* returnedMemory)
 {
 	int degree = returnedMemory->degreeOfSize;
 	auto currentList = listOfPointers.begin();
-	for (int i = 1; i < degree; ++i)
+	for (int i = 0; i < degree; ++i)
 	{
 		++currentList;
 	}

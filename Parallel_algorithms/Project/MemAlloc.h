@@ -2,6 +2,7 @@
 #define MEMORY_ALLOC_H_INCLUDED
 
 #include <list>
+
 #include "AllocatedMemory.h"
 #include "MemoryAllocator.h"
 
@@ -27,7 +28,6 @@ private:
 	MemoryAllocator* memoryAllocator;
 	std::list<subListForMemAlloc> listOfUsingMemory;
 	std::list<subListForMemAlloc> listOfFreeMemory;
-
 
 };
 
