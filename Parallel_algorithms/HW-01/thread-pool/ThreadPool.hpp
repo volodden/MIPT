@@ -18,7 +18,6 @@ public:
 
 	ThreadPool()
 	{
-
 		countOfWorkers = std::thread::hardware_concurrency();
 		if (countOfWorkers < 1)
 		{
@@ -27,7 +26,7 @@ public:
 		startWorkers();
 	}
 
-	ThreadPool(int newCountOfWorkers)
+	ThreadPool(size_t newCountOfWorkers)
 	{
 		if (newCountOfWorkers < 1)
 		{
@@ -57,24 +56,6 @@ public:
 		return fut;
 	}
 
-	void activeWait(std::future<T>& result)
-	{
-		while (result.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
-		{
-			std::promise<T> prom;
-			std::future<T> fut = prom.get_future();
-			std::pair<std::function<T()>, std::promise<T>> task;
-			if (tasks.tryPop(task))
-			{
-				task.first();
-			}
-			else
-			{
-				std::this_tread::yield;
-			}
-		}
-	}
-
 private:
 
 	void startWorkers()
@@ -82,12 +63,12 @@ private:
 		for (size_t i = 0; i < countOfWorkers; ++i)
 		{
 			workers.emplace_back(std::thread([&](){ //thread_guard!
-												      nestedFunction();
+												      runWorker();
 			                                      }));
 		}
 	}
 
-	void nestedFunction()
+	void runWorker()
 	{
 		while (true)
 		{

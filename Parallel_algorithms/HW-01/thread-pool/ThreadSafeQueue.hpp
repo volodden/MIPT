@@ -1,6 +1,7 @@
 #ifndef THREAD_SAFE_QUEUE_H_INCLUDED
 #define THREAD_SAFE_QUEUE_H_INCLUDED
 
+#include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <vector>
@@ -20,9 +21,13 @@ public:
 
 	void push(T newElement)
 	{
-		if (!isEnd)
+		if (!isEnd.load())
 		{
 			std::lock_guard<std::mutex> lock(mtx);
+			if (isEnd.load())
+			{
+				return;
+			}
 			dataQueue.push(std::move(newElement));
 			queueNotEmpty.notify_one();
 		}
@@ -30,10 +35,10 @@ public:
 
 	bool pop(T& returnedElement)
 	{
-		if (!isEnd)
+		if (!isEnd.load())
 		{
 			std::unique_lock<std::mutex> lockMutex(mtx);
-			while ((dataQueue.empty()) && (!isEnd))
+			while ((dataQueue.empty()) && (!isEnd.load()))
 			{
 				queueNotEmpty.wait(lockMutex);
 			}
@@ -63,7 +68,7 @@ public:
 	void shutDown()
 	{
 		std::unique_lock<std::mutex> lockMutex(mtx);
-		isEnd = true;
+		isEnd.store(true);
 		queueNotEmpty.notify_all();
 	}
 
@@ -72,7 +77,7 @@ private:
 	std::queue<T> dataQueue;
 	std::condition_variable queueNotEmpty;
 	std::mutex mtx;
-	bool isEnd;
+	std::atomic<bool> isEnd;
 
 };
 
