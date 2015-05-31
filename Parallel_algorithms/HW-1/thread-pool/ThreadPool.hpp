@@ -7,9 +7,9 @@
 #include <utility>
 #include <vector>
 
-#include "ParallelQueueForThreadPool.hpp"
+#include "ThreadSafeQueue.hpp"
 
-const size_t countOfWorkers = 8;
+#define DEFAULT_COUNT_OF_WORKERS 8
 
 template <class T>
 class ThreadPool
@@ -18,38 +18,34 @@ public:
 
 	ThreadPool()
 	{
-		for (size_t i = 0; i < countOfWorkers; ++i)
+
+		countOfWorkers = std::thread::hardware_concurrency();
+		if (countOfWorkers < 1)
 		{
-			workers.emplace_back(std::thread([&](){ //thread_guard!
-				while (true)
-				{
-					std::pair<std::function<T()>, std::promise<T>> task;
-					if (!tasks.pop(task))
-					{
-						break;
-					}
-					try
-					{
-						task.second.set_value(task.first());
-					}
-					catch (std::exception&)
-					{
-						task.second.set_exception(std::current_exception());
-					}
-				}
-			}));
+			countOfWorkers = DEFAULT_COUNT_OF_WORKERS;
 		}
+		startWorkers();
+	}
+
+	ThreadPool(int newCountOfWorkers)
+	{
+		if (newCountOfWorkers < 1)
+		{
+			countOfWorkers = std::thread::hardware_concurrency();
+			if (countOfWorkers < 1)
+			{
+				countOfWorkers = DEFAULT_COUNT_OF_WORKERS;
+			}
+		}
+		startWorkers();
 	}
 
 	~ThreadPool()
 	{
 		tasks.shutDown();
-		for (int i = 0; i < countOfWorkers; ++i)
+		for (thread& worker : workers)
 		{
-			if (workers[i].joinable())
-			{
-				workers[i].join();
-			}
+			worker.join();
 		}
 	}
 
@@ -61,12 +57,58 @@ public:
 		return fut;
 	}
 
+	void activeWait(std::future<T>& result)
+	{
+		while (result.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+		{
+			std::promise<T> prom;
+			std::future<T> fut = prom.get_future();
+			std::pair<std::function<T()>, std::promise<T>> task;
+			if (tasks.tryPop(task))
+			{
+				task.first();
+			}
+			else
+			{
+				std::this_tread::yield;
+			}
+		}
+	}
+
 private:
 
-	ThreadPool(ThreadPool& otherThreadPool) = delete;
-	void operator =(ThreadPool& otherThreadPool) = delete;
+	void startWorkers()
+	{
+		for (size_t i = 0; i < countOfWorkers; ++i)
+		{
+			workers.emplace_back(std::thread([&](){ //thread_guard!
+												      nestedFunction();
+			                                      }));
+		}
+	}
 
-	ParallelQueueForThreadPool<std::pair<std::function<T()>, std::promise<T>>> tasks;
+	void nestedFunction()
+	{
+		while (true)
+		{
+			std::pair<std::function<T()>, std::promise<T>> task;
+			if (!tasks.pop(task))
+			{
+				break;
+			}
+			try
+			{
+				task.second.set_value(task.first());
+			}
+			catch (std::exception&)
+			{
+				task.second.set_exception(std::current_exception());
+			}
+		}
+	}
+
+	size_t countOfWorkers;
+	ThreadSafeQueue<std::pair<std::function<T()>, std::promise<T>>> tasks;
 	std::vector<std::thread> workers;
 
 };
