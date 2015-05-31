@@ -4,6 +4,11 @@ CyclicBarrier::CyclicBarrier(int newCount) : count(newCount), currentNumberOfThr
 {
 }
 
+void CyclicBarrier::setCountOfThreads(int newCount)
+{
+	count = newCount;
+}
+
 void CyclicBarrier::enter()
 {
 	std::unique_lock<std::mutex> lock(mtx);
@@ -18,7 +23,7 @@ void CyclicBarrier::enter()
 	}
 	else
 	{
-		currentNumberOfThreads -= count;
+		currentNumberOfThreads = 0;
 		++epoch;
 		ring.notify_all();
 	}

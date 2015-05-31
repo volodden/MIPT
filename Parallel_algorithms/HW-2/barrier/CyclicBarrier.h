@@ -15,6 +15,8 @@ public:
 	{
 	}
 
+	void setCountOfThreads(int newCount);
+
 	void enter();
 
 private:
