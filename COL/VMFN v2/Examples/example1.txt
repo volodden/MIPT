@@ -1,0 +1,15 @@
+VAR x
+VAR y
+VAR z
+VAR q
+INP x
+OUT x
+INP y
+OUT y
+MUL x y
+ADD z x
+OUT z
+OUT x
+MVV q 100
+OUT q
+STP

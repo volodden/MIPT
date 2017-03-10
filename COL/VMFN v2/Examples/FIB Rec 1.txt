@@ -1,0 +1,53 @@
+VAR zero
+MVV zero 0
+
+VAR one
+MVV one 1
+
+VAR n
+VAR prev2
+VAR prev1
+MVV prev2 0
+MVV prev1 1
+
+VAR temp
+
+FUN Fibon
+FAV n
+
+LQJ n LAB_zero
+
+DIF n one
+EQJ n LAB_one
+
+MVP temp prev1
+ADD prev1 prev2
+MVP prev2 temp
+
+PRP temp
+FMV n
+CAL Fibon
+
+RET prev1
+
+LAB LAB_one
+RET prev1
+
+LAB LAB_zero
+RET zero
+
+VAR answer
+MSV str_privet VvediteNnoeChisloFibonachchi
+OUS str_privet
+VAR x
+INP x
+
+PRP answer
+FMV x
+CAL Fibon
+
+MSV str_answer VvashOtvet
+OUS str_answer
+OUT answer
+
+STP

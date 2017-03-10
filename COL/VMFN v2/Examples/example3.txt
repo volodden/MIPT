@@ -1,0 +1,33 @@
+MSV privet_a Vvedite_A
+OUS privet_a
+VAR a
+VAR b
+INP a
+MSV privet_b Vvedite_B
+OUS privet_b
+INP b
+MSV eto_a Eto_A
+MSV eto_b Eto_B
+OUS eto_a
+OUT a
+OUS eto_b
+OUT b
+MSV eto_A+=B Eto_A+=B
+OUS eto_A+=B
+ADD a b
+OUT a
+MSV eto_B*=A Eto_B*=A
+OUS eto_B*=A
+MUL b a
+OUT b
+MSV eto_B-=A eto_B-=A
+OUS eto_B-=A
+DIF b a
+OUT b
+OUS eto_a
+OUT a
+MSV eto_A+=A eto_A+=A
+OUS eto_A+=A
+ADD a a
+OUT a
+STP

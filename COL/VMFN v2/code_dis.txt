@@ -1,0 +1,64 @@
+VAR num1
+VAR num2
+VAR num3
+VAR num4
+VAR num5
+VAR num6
+VAR num7
+VAR num8
+MSV str9 VvediteNnoeChisloFibonachchi
+VAR num38
+MSV str39 VvashOtvet
+
+MVV num1 0
+MVV num2 1
+MVV num4 0
+MVV num5 1
+FUN func233
+FAV num3
+FAV num5
+FAV num4
+EQJ num3 label195
+DIF num3 num2
+EQJ num3 label202
+PRP num5
+FMV num3
+FMV num6
+FMV num7
+CAL func233
+DIF num3 num2
+PRP num4
+FMV num3
+FMV num6
+FMV num7
+CAL func233
+ADD num5 num4
+RET num5
+LAB label202
+RET num2
+LAB label195
+RET num1
+FUN func188
+FAV num3
+LQJ num3 label162
+DIF num3 num2
+EQJ num3 label169
+ADD num3 num2
+PRP num3
+FMV num3
+FMV num6
+FMV num7
+CAL func233
+RET num3
+LAB label169
+RET num2
+LAB label162
+RET num1
+OUS str9
+INP num38
+PRP num8
+FMV num38
+CAL func188
+OUS str39
+OUT num8
+STP

@@ -1,0 +1,33 @@
+MSV str_privet VvediteNnoeChisloFibonachchi
+MSV str_answer VvashOtvet
+OUS str_privet
+VAR x
+INP x
+VAR prev1
+VAR prev2
+MVV prev1 0
+MVV prev2 0
+MOJ x POS
+OUS str_answer
+OUT prev1
+STP
+LAB POS
+VAR one
+MVV one 1
+DIF x one
+MVV prev1 1
+NEJ x REC
+OUS str_answer
+OUT prev1
+STP
+LAB REC
+ADD prev1 prev2
+VAR t
+MVP t prev1
+DIF t prev2
+MVP prev2 t
+DIF x one
+NEJ x REC
+OUS str_answer
+OUT prev1
+STP

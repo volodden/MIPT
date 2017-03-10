@@ -1,0 +1,38 @@
+VAR arg
+
+VAR fictiv
+MVV fictiv 0
+
+VAR answer
+MVV answer 0
+
+VAR two
+MVV two 2
+VAR one
+MVV one 1
+
+FUN divide2
+FAV arg
+
+LQJ arg end
+
+DIF arg two
+ADD answer one
+
+LQJ arg end
+PRP fictiv
+FMV arg
+CAL divide2
+
+LAB end
+RET answer
+
+VAR x
+INP x
+
+PRP fictiv
+FMV x
+CAL divide2
+
+OUT answer
+STP

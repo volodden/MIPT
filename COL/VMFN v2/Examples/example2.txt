@@ -1,0 +1,9 @@
+VAR answer
+VAR x
+MVV answer 100
+LAB y
+INP x
+DIF answer x
+OUT answer
+MQJ answer y
+STP
