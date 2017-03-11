@@ -52,21 +52,16 @@ private:
     void translateOUS( std::ifstream& in );
     void translateMVP( std::ifstream& in );
     void translateMVV( std::ifstream& in );
-    void translateMSV( std::ifstream& in );
     void translateVAR( std::ifstream& in );
     void translateADD( std::ifstream& in );
     void translateDIF( std::ifstream& in );
     void translateMUL( std::ifstream& in );
-    
-    
     void translatePRP( std::ifstream& in );
     void translateFMV( std::ifstream& in );
     void translateCAL( std::ifstream& in );
     void translateFUN( std::ifstream& in );
     void translateFAV( std::ifstream& in );
     void translateRET( std::ifstream& in );
-    
-    
     void translateLAB( std::ifstream& in );
     void translateNER( std::ifstream& in, unsigned int typeCode );
     void translateSTP();
@@ -80,4 +75,3 @@ private:
     unsigned int addressLastVar;
     
 };
-

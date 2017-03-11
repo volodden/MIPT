@@ -93,9 +93,7 @@ void Generator::work( const std::string file_in, const std::string file_out ) {
                 << table[i][3] << '\n';
                 break;
             }
-            case Codes::MSV: {
-                break;
-            }
+            case Codes::MSV:
             case Codes::VAR: {
                 break;
             }
@@ -114,8 +112,6 @@ void Generator::work( const std::string file_in, const std::string file_out ) {
                 << variablesNumbers.find( table[i][3] )->second << '\n';
                 break;
             }
-               
-                
             case Codes::PRP: {
                 out << "PRP " << variablesNumbers.find( table[i][3] )->second << '\n';
                 break;
@@ -154,8 +150,6 @@ void Generator::work( const std::string file_in, const std::string file_out ) {
             case  Codes::RE5: {
                 break;
             }
-                
-                
             case Codes::LAB: {
                 out << "LAB label" << i << '\n';
                 break;

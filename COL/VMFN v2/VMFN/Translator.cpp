@@ -68,11 +68,6 @@ void Translator::work( const std::string& file_in, const std::string& file_out )
                 translateMUL( in );
                 break;
             }
-                
-                
-                
-                
-                
             case Codes::PRP: {
                 translatePRP( in );
                 break;
@@ -461,28 +456,6 @@ void Translator::translateMVV( std::ifstream& in ) {
     int n;
     in >> n;
     addNewCommand( "", correctToStr( Codes::MVV ), correctToStr( av ), "000", correctToStr( n ) );
-}
-
-void Translator::translateMSV( std::ifstream& in ) {
-    /*
-    std::string s;
-    in >> s;
-    int av = addressVar - 1;
-    while( true ) {
-        if( av == 0 ) {
-            std::cerr << "ERROR\n";
-            break;
-        }
-        
-        if( bcode[av][0] == s ) {
-            break;
-        }
-        --av;
-    }
-    
-    in >> s;
-    addNewCommand( "", correctToStr( Codes::MSV ), correctToStr( av ), "000", "000" );
-    */
 }
 
 void Translator::translateADD( std::ifstream& in ) {

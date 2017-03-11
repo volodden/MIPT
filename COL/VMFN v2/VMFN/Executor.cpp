@@ -134,10 +134,6 @@ void Executor::work( const std::string& file_in ) {
             case Codes::RET: {
                 --topStack;
                 table[0][3] -= ( table[topStack][0] == Codes::AEF ) ? 1 : 0;
-                //+         Найти метку начала функции.
-                //+         Передать значение.
-                //+         Вернуть прежнее значение ранее объявленным переменным.
-                //+         Вернуться в нужное место в списке команд.
                 break;
             }
             case Codes::RE2: {
@@ -221,8 +217,6 @@ void Executor::work( const std::string& file_in ) {
                 std::cerr << "Command not found\n";
             }
         }
-        
-        //printTable( "//Users//volodden//Desktop//Study//VMFN v2//file.txt" );
         
         if( finish ) {
             printTable( "//Users//volodden//Desktop//Study//VMFN v2//byte-code-in-end.txt" );

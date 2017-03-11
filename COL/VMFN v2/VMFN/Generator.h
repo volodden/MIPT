@@ -29,6 +29,5 @@ private:
     std::vector<std::vector<int> > table;
     std::map<int, std::string> variablesNumbers;
     std::map<int, std::string> variablesStrings;
-    std::map<int, std::string> functions;
     
 };

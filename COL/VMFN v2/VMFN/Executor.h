@@ -29,4 +29,3 @@ private:
     std::vector<std::vector<int> > table;
     unsigned int topStack;
 };
-
